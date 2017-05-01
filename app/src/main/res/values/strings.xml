@@ -7,7 +7,7 @@
     <string name="phone">手機號碼</string>
     <string name="name">匿稱</string>
     <string name="input_companyId">公司名稱</string>
-    <string name="input_device">取號機名稱</string>
+    <string name="input_device">智慧機名稱</string>
     <string name="input_Device_Desc">公司簡介</string>
     <string name="action_add_friend">加朋友</string>
     <string name="action_del_friend">刪朋友</string>

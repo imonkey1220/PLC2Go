@@ -38,9 +38,9 @@ public class BossActivity extends AppCompatActivity {
 
     }
 
-    public void onClickAddThingsDevice(View v) {
-
+    public void onClickAddDevicePLC(View v) {
         Intent intent = new Intent(BossActivity.this, AddThingsDeviceActivity.class);
+        intent.putExtra("deviceType","PLC監控機");
         startActivity(intent);
         finish();
 

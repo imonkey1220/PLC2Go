@@ -51,8 +51,11 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_things_device);
+        Bundle extras = getIntent().getExtras();
+        deviceType = extras.getString("deviceType");
         SharedPreferences settings = getSharedPreferences(devicePrefs, Context.MODE_PRIVATE);
         memberEmail = settings.getString("memberEmail",null);
+
         imageViewAddDevice=(ImageView)(findViewById(R.id.imageViewAddThingsDevice));
         editTextAddCompanyId = (EditText) (findViewById(R.id.editTextAddThingsCompanyId));
         editTextAddDevice = (EditText) (findViewById(R.id.editTextAddThingsDevice));
