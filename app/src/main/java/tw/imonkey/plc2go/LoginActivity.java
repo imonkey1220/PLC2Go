@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     //    private static final String TAG = LoginActivity.class.getSimpleName();
-    //   private static final String PATH_TOS = "";
+    //    private static final String PATH_TOS = "";
     Button loginButton;
     private FirebaseAuth auth;
     private static final int RC_SIGN_IN = 200;
@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
             if(resultCode == RESULT_CANCELED){
                 displayMessage(getString(R.string.signin_failed));
             }
-            return;
         }else {
             displayMessage(getString(R.string.unknown_response));
         }
