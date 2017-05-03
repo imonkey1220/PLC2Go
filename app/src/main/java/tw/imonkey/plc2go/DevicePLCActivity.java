@@ -39,7 +39,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     ArrayList<String> friends = new ArrayList<>();
 
     DatabaseReference mFriends, mDevice ;
-    EditText ETcmdTest;
+    EditText ETCMDTest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +48,16 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         init();
 //        reqestMode();
-     ETcmdTest =(EditText) findViewById(R.id.editTextcmdTest);
+     ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
 
     }
     public void onClickSend(View v){
-        String cmdTest= ETcmdTest.getText().toString().trim();
-        if (!TextUtils.isEmpty(cmdTest)){
-            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/REQ/");
+        String CMDTest= ETCMDTest.getText().toString().trim();
+        if (!TextUtils.isEmpty(CMDTest)){
+            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
             Map<String, Object> CMD = new HashMap<>();
             CMD.clear();
-            CMD.put("message",cmdTest);
+            CMD.put("message",CMDTest);
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
             mRequest.push().setValue(CMD);
