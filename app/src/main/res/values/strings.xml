@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PLC2Go</string>
+    <string name="app_name">E2Go</string>
     <string name="signup">Go</string>
     <string name="enter_email">輸入email</string>
     <string name="enter_password">輸入/設定密碼</string>

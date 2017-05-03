@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,9 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
-public class DevicePLCActivity extends AppCompatActivity {
+public class DevicePLCActivity extends AppCompatActivity  {
     public static final String devicePrefs = "devicePrefs";
     public static final String service="PLC"; //PLC智慧機 deviceType
     String deviceId, memberEmail;
@@ -39,8 +43,9 @@ public class DevicePLCActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
-
+        reqestMode();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,5 +189,45 @@ public class DevicePLCActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+    private void reqestMode(){
+        // Spinner element
+        Spinner spinnerMode = (Spinner) findViewById(R.id.spinnerMode);
+        // Spinner Drop down elements
+        final List<String> categories = new ArrayList<>();
+        categories.add("Read Bit");
+        categories.add("Read Word ");
+        categories.add("Write Bit");
+        categories.add("Write Word");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinnerMode.setAdapter(dataAdapter);
+        spinnerMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void reqestPLCNo(){
+
+    }
+
+
+    private void PLC_protocol(){
+
+    }
+
 
 }
