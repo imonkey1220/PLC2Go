@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +21,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class DevicePLCActivity extends AppCompatActivity  {
@@ -35,7 +39,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     ArrayList<String> friends = new ArrayList<>();
 
     DatabaseReference mFriends, mDevice ;
-
+    EditText ETcmdTest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +47,21 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
-        reqestMode();
+//        reqestMode();
+     ETcmdTest =(EditText) findViewById(R.id.editTextcmdTest);
+
+    }
+    public void onClickSend(View v){
+        String cmdTest= ETcmdTest.getText().toString().trim();
+        if (!TextUtils.isEmpty(cmdTest)){
+            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/REQ/");
+            Map<String, Object> CMD = new HashMap<>();
+            CMD.clear();
+            CMD.put("message",cmdTest);
+            CMD.put("memberEmail",memberEmail);
+            CMD.put("timeStamp", ServerValue.TIMESTAMP);
+            mRequest.push().setValue(CMD);
+        }
     }
 
 
