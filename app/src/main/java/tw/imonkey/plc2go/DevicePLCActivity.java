@@ -33,6 +33,7 @@ import java.util.TimeZone;
 public class DevicePLCActivity extends AppCompatActivity  {
     public static final String devicePrefs = "devicePrefs";
     public static final String service="PLC"; //PLC智慧機 deviceType
+    String STX,ETX;
     String deviceId, memberEmail;
     boolean master;
     ListView deviceView;
@@ -328,5 +329,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
             }
         });
+    }
+
+    private void PLC_Protocol(){
+        //set serialport protocol parameters
+        STX=new String(new char[]{0x02});
+        ETX=new String(new char[]{0x0D,0x0A});//0x02:STX,0x03:ETX,0x05:ENQ,0x0A:'/n',0xOD:CR,0x0A:LF,0x3A:':'
     }
 }
