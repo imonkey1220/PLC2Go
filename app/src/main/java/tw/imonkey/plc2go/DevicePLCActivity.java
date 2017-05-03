@@ -238,14 +238,95 @@ public class DevicePLCActivity extends AppCompatActivity  {
         });
     }
 
-    private void reqestPLCNo(){
+    private void PLC_No(){
+        // Spinner element
+        Spinner spinnerMode = (Spinner) findViewById(R.id.spinnerPLCNo);
+        // Spinner Drop down elements
+        final List<String> categories = new ArrayList<>();
+        categories.add("Read Bit");
+        categories.add("Read Word ");
+        categories.add("Write Bit");
+        categories.add("Write Word");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinnerMode.setAdapter(dataAdapter);
+        spinnerMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
 
-    private void PLC_protocol(){
+    private void PLC_Register(){
+        // Spinner element
+        Spinner spinnerMode = (Spinner) findViewById(R.id.spinnerRegister);
+        // Spinner Drop down elements
+        final List<String> categories = new ArrayList<>();
+        categories.add("Read Bit");
+        categories.add("Read Word ");
+        categories.add("Write Bit");
+        categories.add("Write Word");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinnerMode.setAdapter(dataAdapter);
+        spinnerMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
+    private void Register_Block(){
+        // Spinner element
+        Spinner spinnerMode = (Spinner) findViewById(R.id.spinnerBlock);
+        // Spinner Drop down elements
+        final List<String> categories = new ArrayList<>();
+        categories.add("Read Bit");
+        categories.add("Read Word ");
+        categories.add("Write Bit");
+        categories.add("Write Word");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        // attaching data adapter to spinner
+        spinnerMode.setAdapter(dataAdapter);
+        spinnerMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 }
