@@ -206,7 +206,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -232,10 +233,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -245,10 +244,10 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
         // Spinner Drop down elements
         final List<String> categories = new ArrayList<>();
-        categories.add("Read Bit");
-        categories.add("Read Word ");
-        categories.add("Write Bit");
-        categories.add("Write Word");
+        categories.add("1");
+        categories.add("2");
+        categories.add("3");
+        categories.add("4");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
@@ -262,10 +261,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -276,10 +273,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register = (Spinner) findViewById(R.id.spinnerRegister);
         // Spinner Drop down elements
         final List<String> categories = new ArrayList<>();
-        categories.add("Read Bit");
-        categories.add("Read Word ");
-        categories.add("Write Bit");
-        categories.add("Write Word");
+        categories.add("M");
+        categories.add("B");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
@@ -293,10 +288,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -306,10 +299,10 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block = (Spinner) findViewById(R.id.spinnerBlock);
         // Spinner Drop down elements
         final List<String> categories = new ArrayList<>();
-        categories.add("Read Bit");
-        categories.add("Read Word ");
-        categories.add("Write Bit");
-        categories.add("Write Word");
+        categories.add("1");
+        categories.add("2");
+        categories.add("3");
+        categories.add("4");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
@@ -326,7 +319,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -339,10 +331,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Protocol = (Spinner) findViewById(R.id.spinnerProtocol);
         // Spinner Drop down elements
         final List<String> categories = new ArrayList<>();
-        categories.add("Read Bit");
-        categories.add("Read Word ");
-        categories.add("Write Bit");
-        categories.add("Write Word");
+        categories.add("No protocol");
+        categories.add("ModBus");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
@@ -356,12 +346,9 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
     }
 }
