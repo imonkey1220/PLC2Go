@@ -121,8 +121,6 @@ public class MainActivity extends Activity {
         };
     }
 
-
-
     private void getDevices(){
         Query refMasterDevice = FirebaseDatabase.getInstance().getReference("/master/"+memberEmail.replace(".", "_")).orderByChild("companyId");
         devicesMasterView = (ListView) findViewById(R.id.listViewDevicesM);

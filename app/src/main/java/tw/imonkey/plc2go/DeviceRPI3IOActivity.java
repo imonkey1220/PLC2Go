@@ -3,8 +3,10 @@ package tw.imonkey.plc2go;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class DeviceRPI3IOActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
+public class DeviceRPI3IOActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

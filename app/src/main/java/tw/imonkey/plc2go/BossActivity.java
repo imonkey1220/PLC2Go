@@ -46,4 +46,12 @@ public class BossActivity extends AppCompatActivity {
 
     }
 
+    public void onClickAddDeviceRPI3IO(View v) {
+        Intent intent = new Intent(BossActivity.this, AddThingsDeviceActivity.class);
+        intent.putExtra("deviceType","GPIO機");
+        startActivity(intent);
+        finish();
+
+    }
+
 }
