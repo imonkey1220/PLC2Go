@@ -22,21 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="4" />
 
-        <TextView
-            android:id="@+id/textViewFTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/wallet_highlighted_text_holo_dark"
-            android:text="友機"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_dark"
-            android:textSize="8sp" />
-
-        <ListView
-            android:id="@+id/listViewDevicesF"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            tools:layout_weight="2" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

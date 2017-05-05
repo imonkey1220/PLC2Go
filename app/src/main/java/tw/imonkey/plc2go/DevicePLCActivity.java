@@ -98,7 +98,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
                                 public void onDataChange(DataSnapshot snapshot) {
                                     if (snapshot.getValue() != null) {
                                         Device device = snapshot.getValue(Device.class);
-                                        DatabaseReference mInvitation = FirebaseDatabase.getInstance().getReference("/friend/" + editTextAddFriendEmail.getText().toString().replace(".", "_") + "/" + deviceId);
+                                        DatabaseReference mInvitation = FirebaseDatabase.getInstance().getReference("/FUI/" + editTextAddFriendEmail.getText().toString().replace(".", "_") + "/" + deviceId);
                                         mInvitation.setValue(device);
                                         Toast.makeText(DevicePLCActivity.this, "已寄出邀請函(有效時間10分鐘)", Toast.LENGTH_LONG).show();
                                     }
@@ -155,46 +155,25 @@ public class DevicePLCActivity extends AppCompatActivity  {
         deviceId = extras.getString("deviceId");
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
-        if (master) {
-            mDevice = FirebaseDatabase.getInstance().getReference("/master/" + memberEmail.replace(".", "_") + "/" + deviceId);
-            mDevice.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot != null) {
-                        if (snapshot.child("connection").getValue() != null) {
-                            setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "上線");
-                        } else {
-                            setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "離線");
-                            Toast.makeText(DevicePLCActivity.this, "PLC智慧機離線", Toast.LENGTH_LONG).show();
-                        }
+        mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
+        mDevice.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot != null) {
+                    if (snapshot.child("connection").getValue() != null) {
+                        setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "上線");
+                    } else {
+                        setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "離線");
+                        Toast.makeText(DevicePLCActivity.this, "PLC智慧機離線", Toast.LENGTH_LONG).show();
+                      }
                     }
                 }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
                 }
             });
 
-        } else {
-            mDevice = FirebaseDatabase.getInstance().getReference("/friend/" + memberEmail.replace(".", "_") + "/" + deviceId);
-            mDevice.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.getValue() != null) {
-                        if (snapshot.child("connection").getValue() != null) {
-                            setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "上線");
-                        } else {
-                            setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "離線");
-                            Toast.makeText(DevicePLCActivity.this, "PLC智慧機離線", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-        }
 
         mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");
         mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {

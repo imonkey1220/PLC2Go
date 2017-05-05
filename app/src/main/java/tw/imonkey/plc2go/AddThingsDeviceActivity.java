@@ -130,7 +130,7 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
     }
 
     private void toFirebase(){
-        DatabaseReference mAddMaster= FirebaseDatabase.getInstance().getReference("/master/" +memberEmail.replace(".", "_"));
+        DatabaseReference mAddMaster= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
         deviceId =mAddMaster.push().getKey();
         Map<String, Object> addMaster = new HashMap<>();
         addMaster.put("companyId",companyId) ;
