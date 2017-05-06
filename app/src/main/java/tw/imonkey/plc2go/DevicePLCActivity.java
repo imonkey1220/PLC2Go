@@ -38,8 +38,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
     boolean master;
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
-
     DatabaseReference mFriends, mDevice ;
+
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
     @Override
@@ -66,7 +66,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (master) {
@@ -75,7 +74,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
         }
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
