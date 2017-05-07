@@ -192,13 +192,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
         // Spinner element
         PLC_Mode = (Spinner) findViewById(R.id.spinnerMode);
         // Spinner Drop down elements
-        final List<String> categories = new ArrayList<>();
-        categories.add("Read Bit");
-        categories.add("Read Word ");
-        categories.add("Write Bit");
-        categories.add("Write Word");
+        final List<String> items = new ArrayList<>();
+        items.add("Read Bit");
+        items.add("Read Word ");
+        items.add("Write Bit");
+        items.add("Write Word");
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -208,7 +208,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -220,13 +220,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
         // Spinner element
         PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
         // Spinner Drop down elements
-        final List<String> categories = new ArrayList<>();
-        categories.add("1");
-        categories.add("2");
-        categories.add("3");
-        categories.add("4");
+        final List<String> items = new ArrayList<>();
+        items.add("1");
+        items.add("2");
+        items.add("3");
+        items.add("4");
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -236,7 +236,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -249,11 +249,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
         // Spinner element
         PLC_Register = (Spinner) findViewById(R.id.spinnerRegister);
         // Spinner Drop down elements
-        final List<String> categories = new ArrayList<>();
-        categories.add("M");
-        categories.add("B");
+        final List<String> items = new ArrayList<>();
+        items.add("M");
+        items.add("B");
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -263,7 +263,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -275,13 +275,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
         // Spinner element
         Register_Block = (Spinner) findViewById(R.id.spinnerBlock);
         // Spinner Drop down elements
-        final List<String> categories = new ArrayList<>();
-        categories.add("1");
-        categories.add("2");
-        categories.add("3");
-        categories.add("4");
+        final List<String> items = new ArrayList<>();
+        items.add("1");
+        items.add("2");
+        items.add("3");
+        items.add("4");
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -291,7 +291,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -307,11 +307,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
         // Spinner element
         PLC_Protocol = (Spinner) findViewById(R.id.spinnerProtocol);
         // Spinner Drop down elements
-        final List<String> categories = new ArrayList<>();
-        categories.add("No protocol");
-        categories.add("ModBus");
+        final List<String> items = new ArrayList<>();
+        items.add("No protocol");
+        items.add("ModBus");
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -321,7 +321,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Protocol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + categories.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

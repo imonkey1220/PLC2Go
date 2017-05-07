@@ -1,26 +1,37 @@
 package tw.imonkey.plc2go;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -29,9 +40,15 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     public static final String service="RPI3IO"; //GPIO智慧機 deviceType
     String deviceId, memberEmail;
     boolean master;
-    ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
-    DatabaseReference mFriends, mDevice ;
+    Map<String, Object> cmd = new HashMap<>();
+    Map<String, Object> log = new HashMap<>();
+    DatabaseReference mFriends,mDevice,mLog, mXINPUT,mYOUTPUT;
+    FirebaseListAdapter mAdapter;
+    ListView deviceView ;
+    Switch Y00,Y01,Y02,Y03,Y04,Y05,Y06,Y07;
+    TextView X00,X01,X02,X03,X04,X05,X06,X07;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +57,388 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
+
+        mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
+
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
+        deviceView = (ListView) findViewById(R.id.listViewDevice);
+        mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
+            @Override
+            public Message getItem(int position) {
+                return super.getItem(getCount() - (position + 1)); //反轉排序
+            }
+
+            @Override
+            protected void populateView(View view, Message message, int position) {
+                Calendar timeStamp= Calendar.getInstance();
+                timeStamp.setTimeInMillis(message.getTimeStamp());
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm", Locale.TAIWAN);
+                if (position%2==0) {
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.BLUE);
+                }else{
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.RED);
+                }
+                ((TextView)view.findViewById(android.R.id.text2)).setText((df.format(timeStamp.getTime())));
+
+            }
+        };
+        deviceView.setAdapter(mAdapter);
+
+        mYOUTPUT=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/Y/");
+        Y00.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y00.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y00",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp", ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y00=true");
+                }else{
+                    cmd.clear();
+                    cmd.put("Y00",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y00=false");
+
+                }
+            }
+        });
+        Y01.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y01.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y01",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y01=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y01",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y01=false");
+
+                }
+            }
+        });
+
+        Y02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y02.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y02",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y02=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y02",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y02=false");
+
+                }
+            }
+        });
+
+        Y03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y03.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y03",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y03=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y03",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y03=false");
+                }
+            }
+        });
+
+        Y04.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y04.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y04",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y04=true");
+                }else{
+                    cmd.clear();
+                    cmd.put("Y04",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y04=false");
+
+                }
+            }
+        });
+        Y05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y05.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y05",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y05=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y05",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y05=false");
+
+                }
+            }
+        });
+
+        Y06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y06.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y06",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y06=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y06",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y06=false");
+
+                }
+            }
+        });
+
+        Y07.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Y07.isChecked()) {
+                    cmd.clear();
+                    cmd.put("Y07",true);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y07=true");
+
+                }else{
+                    cmd.clear();
+                    cmd.put("Y07",false);
+                    cmd.put("memberEmail",memberEmail);
+                    cmd.put("timeStamp",ServerValue.TIMESTAMP);
+                    mYOUTPUT.push().setValue(cmd);
+                    log("Y_input:"+memberEmail+"->Y07=false");
+                }
+            }
+        });
+
+
+        mYOUTPUT.limitToLast(100).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.child("Y00").getValue()!=null) {
+                    if(dataSnapshot.child("Y00").getValue().equals(true)) {
+                        Y00.setChecked(true);
+                    }else{
+                        Y00.setChecked(false);
+                    }
+                }
+                if (dataSnapshot.child("Y01").getValue()!=null) {
+                    if(dataSnapshot.child("Y01").getValue().equals(true)) {
+                        Y01.setChecked(true);
+                    }else{
+                        Y01.setChecked(false);
+                    }
+                }
+                if (dataSnapshot.child("Y02").getValue()!=null) {
+                    if(dataSnapshot.child("Y02").getValue().equals(true)) {
+                        Y02.setChecked(true);
+                    }else{
+                        Y02.setChecked(false);
+                    }
+                }
+                if (dataSnapshot.child("Y03").getValue()!=null) {
+                    if(dataSnapshot.child("Y03").getValue().equals(true)) {
+                        Y03.setChecked(true);
+                    }else{
+                        Y03.setChecked(false);
+                    }
+                }
+
+                if (dataSnapshot.child("Y04").getValue()!=null) {
+                    if(dataSnapshot.child("Y04").getValue().equals(true)) {
+                        Y04.setChecked(true);
+                    }else{
+                        Y04.setChecked(false);
+                    }
+                }
+                if (dataSnapshot.child("Y05").getValue()!=null) {
+                    if(dataSnapshot.child("Y05").getValue().equals(true)) {
+                        Y05.setChecked(true);
+                    }else{
+                        Y05.setChecked(false);
+                    }
+                }
+                if (dataSnapshot.child("Y06").getValue()!=null) {
+                    if(dataSnapshot.child("Y06").getValue().equals(true)) {
+                        Y06.setChecked(true);
+                    }else{
+                        Y06.setChecked(false);
+                    }
+                }
+
+                if (dataSnapshot.child("Y07").getValue()!=null) {
+                    if(dataSnapshot.child("Y07").getValue().equals(true)) {
+                        Y07.setChecked(true);
+                    }else{
+                        Y07.setChecked(false);
+                    }
+                }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        mXINPUT= FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/X/");
+        mXINPUT.limitToLast(100).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.child("X00").getValue()!=null) {
+                    if(dataSnapshot.child("X00").getValue().equals(true)) {
+                        X00.setBackgroundColor(Color.RED);
+                    }else{
+                        X00.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X01").getValue()!=null) {
+                    if(dataSnapshot.child("X01").getValue().equals(true)) {
+                        X01.setBackgroundColor(Color.RED);
+                    }else{
+                        X01.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X02").getValue()!=null) {
+                    if(dataSnapshot.child("X02").getValue().equals(true)) {
+                        X02.setBackgroundColor(Color.RED);
+                    }else{
+                        X02.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X03").getValue()!=null) {
+                    if(dataSnapshot.child("X03").getValue().equals(true)) {
+                        X03.setBackgroundColor(Color.RED);
+                    }else{
+                        X03.setBackgroundColor(Color.BLUE);
+                    }
+                }
+
+                if (dataSnapshot.child("X04").getValue()!=null) {
+                    if(dataSnapshot.child("X04").getValue().equals(true)) {
+                        X04.setBackgroundColor(Color.RED);
+                    }else{
+                        X04.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X05").getValue()!=null) {
+                    if(dataSnapshot.child("X05").getValue().equals(true)) {
+                        X05.setBackgroundColor(Color.RED);
+                    }else{
+                        X05.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X06").getValue()!=null) {
+                    if(dataSnapshot.child("X06").getValue().equals(true)) {
+                        X06.setBackgroundColor(Color.RED);
+                    }else{
+                        X06.setBackgroundColor(Color.BLUE);
+                    }
+                }
+                if (dataSnapshot.child("X07").getValue()!=null) {
+                    if(dataSnapshot.child("X07").getValue().equals(true)) {
+                        X07.setBackgroundColor(Color.RED);
+                    }else{
+                        X07.setBackgroundColor(Color.BLUE);
+                    }
+                }
+
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+memberEmail.replace(".","_")+"/"+deviceId+"/"+"friend");
+        mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                friends.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    friends.add(childSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+
     }
 
     @Override
@@ -162,4 +561,34 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void log(String message) {
+        log.clear();
+        log.put("message", message);
+        log.put("memberEmail", memberEmail);
+        log.put("timeStamp", ServerValue.TIMESTAMP);
+        mLog.push().setValue(log);
+    }
+
+    public void buttonSendMessageOnClick(View view){
+        EditText editTextTalk=(EditText)findViewById(R.id.editTextTalk);
+        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/log/"+deviceId);
+        if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
+            Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("message","Gotcha:"+memberEmail);
+            addMessage.put("timeStamp", ServerValue.TIMESTAMP);
+            mTalk.push().setValue(addMessage);
+            Toast.makeText(DeviceRPI3IOActivity.this, "Gotcha!", Toast.LENGTH_LONG).show();
+        }else{
+            Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("message","Gotcha:"+memberEmail+"->"+editTextTalk.getText().toString().trim());
+            addMessage.put("timeStamp", ServerValue.TIMESTAMP);
+            mTalk.push().setValue(addMessage);
+            Toast.makeText(DeviceRPI3IOActivity.this,editTextTalk.getText().toString().trim(), Toast.LENGTH_LONG).show();
+            editTextTalk.setText("");
+        }
+
+    }
 }
+
