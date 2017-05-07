@@ -17,7 +17,7 @@
         tools:layout_editor_absoluteY="8dp">
 
         <ListView
-            android:id="@+id/listViewDevicesM"
+            android:id="@+id/listViewDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="4" />
