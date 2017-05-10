@@ -61,11 +61,11 @@ public class AddUserActivity extends AppCompatActivity {
         String username = editTextAddUser.getText().toString().trim();
         String description = editTextAddDescription.getText().toString().trim();
         if (!(TextUtils.isEmpty(companyId) ||TextUtils.isEmpty(username)||TextUtils.isEmpty(description))) {
-            mAddMaster= FirebaseDatabase.getInstance().getReference("/master/" +memberEmail.replace(".", "_"));
+            mAddMaster= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
             deviceId =mAddMaster.push().getKey();
             Map<String, Object> addMaster = new HashMap<>();
             addMaster.put("companyId",companyId) ;
-            addMaster.put("username",username);
+            addMaster.put("device",username);
             addMaster.put("deviceType","主機");
             addMaster.put("description",description);
             addMaster.put("masterEmail",memberEmail) ;
@@ -76,7 +76,7 @@ public class AddUserActivity extends AppCompatActivity {
             mAddDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);
             Map<String, Object> addDevice = new HashMap<>();
             addDevice.put("companyId",companyId);
-            addDevice.put("username",username);
+            addDevice.put("device",username);
             addDevice.put("deviceType","主機");
             addDevice.put("description",description);
             addDevice.put("masterEmail",memberEmail) ;

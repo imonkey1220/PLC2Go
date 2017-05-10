@@ -68,6 +68,7 @@ public class MainActivity extends Activity {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
+        /*
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
@@ -75,6 +76,7 @@ public class MainActivity extends Activity {
             }
         }
         // [END handle_data_extras]
+        */
         memberCheck();
     }
 
@@ -152,8 +154,6 @@ public class MainActivity extends Activity {
                         ((TextView) view.findViewById(R.id.deviceMessage)).setText("");
                     }
                 }
-
-
             }
         };
         devicesView.setAdapter(mDeviceAdapter);
