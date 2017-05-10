@@ -19,7 +19,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AddUserActivity" />
         <activity android:name=".BossActivity" />
-        <activity android:name=".DevicePLCActivity" />
         <activity android:name=".AddThingsDeviceActivity" />
 
         <!-- [START firebase_iid_service] -->
@@ -48,7 +47,15 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".DeviceRPI3IOActivity"></activity>
+
+        <activity
+            android:name=".DevicePLCActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeviceRPI3IOActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

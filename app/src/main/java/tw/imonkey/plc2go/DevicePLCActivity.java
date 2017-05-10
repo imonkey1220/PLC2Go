@@ -50,7 +50,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         init();
 //        reqestMode();
-     ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
+        ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
 
     }
     public void onClickSend(View v){
@@ -163,14 +163,14 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     } else {
                         setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "離線");
                         Toast.makeText(DevicePLCActivity.this, "PLC智慧機離線", Toast.LENGTH_LONG).show();
-                      }
                     }
                 }
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                }
-            });
+            }
+        });
 
 
         mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");

@@ -57,4 +57,6 @@
     <string name="title_activity_club">顧客管理</string>
     <string name="title_activity_device0">商店管理</string>
     <string name="title_activity_device2">打卡機</string>
+    <string name="title_activity_device_plc2">DevicePLC2Activity</string>
+    <string name="title_activity_device_rpi3_io2">DeviceRPI3IO2Activity</string>
 </resources>

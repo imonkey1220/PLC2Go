@@ -221,10 +221,10 @@ public class MainActivity extends Activity {
     private void phoneOnline(){
         //phone online check
         // Write a string when this client loses connection
-        presenceRef = FirebaseDatabase.getInstance().getReference("/memberOnline/"+memberEmail.replace(".", "_")+"/connections");
+        presenceRef = FirebaseDatabase.getInstance().getReference("/USER/"+memberEmail.replace(".", "_")+"/connections");
         presenceRef.setValue(true);
         presenceRef.onDisconnect().setValue(null);
-        lastOnlineRef =FirebaseDatabase.getInstance().getReference("/USEROnline/"+memberEmail.replace(".", "_")+"/lastOnline");
+        lastOnlineRef =FirebaseDatabase.getInstance().getReference("/USER/"+memberEmail.replace(".", "_")+"/lastOnline");
         lastOnlineRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
