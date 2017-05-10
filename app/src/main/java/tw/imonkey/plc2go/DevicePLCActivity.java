@@ -63,6 +63,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
             mRequest.push().setValue(CMD);
+            Toast.makeText(DevicePLCActivity.this, "Send message:"+CMDTest, Toast.LENGTH_LONG).show();
+            ETCMDTest.setText("");
         }
     }
 
