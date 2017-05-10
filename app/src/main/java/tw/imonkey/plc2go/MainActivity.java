@@ -224,7 +224,7 @@ public class MainActivity extends Activity {
         presenceRef = FirebaseDatabase.getInstance().getReference("/memberOnline/"+memberEmail.replace(".", "_")+"/connections");
         presenceRef.setValue(true);
         presenceRef.onDisconnect().setValue(null);
-        lastOnlineRef =FirebaseDatabase.getInstance().getReference("/memberOnline/"+memberEmail.replace(".", "_")+"/lastOnline");
+        lastOnlineRef =FirebaseDatabase.getInstance().getReference("/USEROnline/"+memberEmail.replace(".", "_")+"/lastOnline");
         lastOnlineRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
