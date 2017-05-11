@@ -202,7 +202,33 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register();
         Register_Block();
     }
+    private void PLC_No(){
+        // Spinner element
+        PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
+        // Spinner Drop down elements
+        final List<String> items = new ArrayList<>();
+        items.add("00FF");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        PLC_No.setAdapter(dataAdapter);
+        PLC_No.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[0]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+    
     private void PLC_Mode(){
         // Spinner element
         PLC_Mode = (Spinner) findViewById(R.id.spinnerMode);
@@ -233,32 +259,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         });
     }
 
-    private void PLC_No(){
-        // Spinner element
-        PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
-        // Spinner Drop down elements
-        final List<String> items = new ArrayList<>();
-        items.add("00FF");
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        PLC_No.setAdapter(dataAdapter);
-        PLC_No.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[0]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
 
 
     private void PLC_Register(){
