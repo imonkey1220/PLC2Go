@@ -32,13 +32,15 @@ import java.util.TimeZone;
 
 public class DevicePLCActivity extends AppCompatActivity  {
     public static final String devicePrefs = "devicePrefs";
-    public static final String service="PLC"; //PLC智慧機 deviceType
+    public static final String service="PLC"; //PLC監控機 deviceType
     //*******PLC****************
     //set serialport protocol parameters
     String STX=new String(new char[]{0x02});
     String ETX=new String(new char[]{0x03});
     String ENQ=new String(new char[]{0x05});
     String newLine=new String(new char[]{0x0D,0x0A});
+
+    String[] cmd={"","","",""};
 
     String deviceId, memberEmail;
     boolean master;
@@ -222,6 +224,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[1]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -247,6 +251,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[0]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -280,6 +286,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[2]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -320,6 +328,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[3]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
             }
 
             @Override
