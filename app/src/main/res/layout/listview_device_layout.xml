@@ -22,14 +22,14 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:textColor="@android:color/holo_blue_light"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/deviceMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:textColor="?android:attr/colorPressedHighlight"
+            android:textColor="?android:attr/colorControlActivated"
             android:textSize="24sp" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
             android:textColor="?android:attr/colorPressedHighlight"
-            android:textSize="24sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
 

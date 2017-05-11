@@ -33,7 +33,13 @@ import java.util.TimeZone;
 public class DevicePLCActivity extends AppCompatActivity  {
     public static final String devicePrefs = "devicePrefs";
     public static final String service="PLC"; //PLC智慧機 deviceType
-    String STX,ETX;
+    //*******PLC****************
+    //set serialport protocol parameters
+    String STX=new String(new char[]{0x02});
+    String ETX=new String(new char[]{0x03});
+    String ENQ=new String(new char[]{0x05});
+    String newLine=new String(new char[]{0x0D,0x0A});
+
     String deviceId, memberEmail;
     boolean master;
     ListView deviceView;
@@ -188,6 +194,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+        PLC_Protocol();
+        PLC_No();
+        PLC_Mode();
+        PLC_Register();
+        Register_Block();
     }
 
     private void PLC_Mode(){
@@ -195,10 +206,10 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode = (Spinner) findViewById(R.id.spinnerMode);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
-        items.add("Read Bit");
-        items.add("Read Word ");
-        items.add("Write Bit");
-        items.add("Write Word");
+        items.add("BRA"); // read bit
+        items.add("WRA"); // read word
+        items.add("BWA"); // write bit
+        items.add("WWA"); // write word
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
@@ -223,10 +234,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
-        items.add("1");
-        items.add("2");
-        items.add("3");
-        items.add("4");
+        items.add("00FF");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
@@ -252,8 +260,14 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register = (Spinner) findViewById(R.id.spinnerRegister);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
-        items.add("M");
-        items.add("B");
+        items.add("M0000");// bit register
+        items.add("M0010");// bit register
+        items.add("M0020");// bit register
+        items.add("M0030");// bit register
+        items.add("D0000");// word register
+        items.add("D0010");// word register
+        items.add("D0020");// word register
+        items.add("D0030");// word register
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
@@ -278,10 +292,22 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block = (Spinner) findViewById(R.id.spinnerBlock);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
-        items.add("1");
-        items.add("2");
-        items.add("3");
-        items.add("4");
+        items.add("01");
+        items.add("02");
+        items.add("03");
+        items.add("04");
+        items.add("05");
+        items.add("06");
+        items.add("07");
+        items.add("08");
+        items.add("0A");
+        items.add("0B");
+        items.add("0C");
+        items.add("0D");
+        items.add("0E");
+        items.add("0F");
+        items.add("10");
+        items.add("20");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
@@ -303,9 +329,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     }
 
     private void PLC_Protocol(){
-        //set serialport protocol parameters
-        STX=new String(new char[]{0x02});
-        ETX=new String(new char[]{0x0D,0x0A});//0x02:STX,0x03:ETX,0x05:ENQ,0x0A:'/n',0xOD:CR,0x0A:LF,0x3A:':'
+
         // Spinner element
         PLC_Protocol = (Spinner) findViewById(R.id.spinnerProtocol);
         // Spinner Drop down elements

@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        /*
+
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
@@ -76,7 +76,6 @@ public class MainActivity extends Activity {
             }
         }
         // [END handle_data_extras]
-        */
         memberCheck();
     }
 
@@ -122,9 +121,9 @@ public class MainActivity extends Activity {
     }
 
     private void getDevices(){
-        Query refMasterDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_")).orderByChild("companyId");
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_")).orderByChild("companyId");
         devicesView = (ListView) findViewById(R.id.listViewDevices);
-        mDeviceAdapter= new FirebaseListAdapter<Device>(this, Device.class,R.layout.listview_device_layout, refMasterDevice) {
+        mDeviceAdapter= new FirebaseListAdapter<Device>(this, Device.class,R.layout.listview_device_layout, refDevice) {
 
             @Override
             protected void populateView(View view, Device device, int position) {
@@ -135,6 +134,11 @@ public class MainActivity extends Activity {
                     } else {
                         ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "離線" + ":" + device.getDescription());
                     }
+
+                    if (device.getDeviceType().equals("主機")){
+                        ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
+                    }
+
                     String devicePhotoPath = "/devicePhoto/" + device.getTopics_id();
                     mImageRef = FirebaseStorage.getInstance().getReference(devicePhotoPath);
                     ImageView imageView = (ImageView) view.findViewById(R.id.deviceImage);
