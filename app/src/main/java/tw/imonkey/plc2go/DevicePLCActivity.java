@@ -40,7 +40,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     String ENQ=new String(new char[]{0x05});
     String newLine=new String(new char[]{0x0D,0x0A});
 
-    String[] cmd={"","","",""};
+    String[] cmd={"","","","",""};
 
     String deviceId, memberEmail;
     boolean master;
@@ -199,6 +199,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Protocol();
         PLC_No();
         PLC_Mode();
+        PLC_Delay();
         PLC_Register();
         Register_Block();
     }
@@ -221,23 +222,23 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 cmd[0]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }
-    
+
     private void PLC_Mode(){
         // Spinner element
         PLC_Mode = (Spinner) findViewById(R.id.spinnerMode);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
-        items.add("BRA"); // read bit
-        items.add("WRA"); // read word
-        items.add("BWA"); // write bit
-        items.add("WWA"); // write word
+        items.add("BR"); // read bit
+        items.add("WR"); // read word
+        items.add("BW"); // write bit
+        items.add("WW"); // write word
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
@@ -251,7 +252,37 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 cmd[1]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void PLC_Delay(){
+        // Spinner element
+        PLC_Mode = (Spinner) findViewById(R.id.spinnerDelayTime);
+        // Spinner Drop down elements
+        final List<String> items = new ArrayList<>();
+        items.add("0");
+        items.add("5");
+        items.add("A");
+        items.add("E");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        PLC_Mode.setAdapter(dataAdapter);
+        PLC_Mode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                cmd[2]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -287,8 +318,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[2]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
+                cmd[3]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -329,8 +360,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[3]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]);
+                cmd[4]=items.get(position);
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
 
             @Override
