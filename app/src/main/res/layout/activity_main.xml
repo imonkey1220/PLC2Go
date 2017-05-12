@@ -6,22 +6,12 @@
     android:layout_height="match_parent"
     tools:context="tw.imonkey.plc2go.MainActivity">
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <ListView
+        android:id="@+id/listViewDevices"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="8dp">
-
-        <ListView
-            android:id="@+id/listViewDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="4" />
-
-    </LinearLayout>
+        android:layout_weight="4"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>

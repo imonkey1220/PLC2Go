@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,8 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,10 +49,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
     boolean master;
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
-    DatabaseReference mFriends, mDevice ;
+    DatabaseReference mFriends, mDevice,mRespond;
 
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
+    TextView TVRX;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +62,33 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         init();
 //        reqestMode();
-        ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
+        respondRX();
 
     }
-    public void onClickSend(View v){
+
+    private void respondRX(){
+        TVRX =(TextView)findViewById(R.id.textViewRX);
+        mRespond= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/RX/");
+        mRespond.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                if (dataSnapshot.child("message").getValue()!= null) {
+                    TVRX.setText(dataSnapshot.child("message").getValue().toString());
+                }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void onClickTEST(View v){
         String CMDTest= ETCMDTest.getText().toString().trim();
         if (!TextUtils.isEmpty(CMDTest)){
             DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
@@ -75,6 +102,22 @@ public class DevicePLCActivity extends AppCompatActivity  {
             ETCMDTest.setText("");
         }
     }
+
+    public void onClickSAVE(View v){
+        String CMDTest= ETCMDTest.getText().toString().trim();
+        if (!TextUtils.isEmpty(CMDTest)){
+            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
+            Map<String, Object> CMD = new HashMap<>();
+            CMD.clear();
+            CMD.put("message",CMDTest);
+            CMD.put("memberEmail",memberEmail);
+            CMD.put("timeStamp", ServerValue.TIMESTAMP);
+            mRequest.push().setValue(CMD);
+            Toast.makeText(DevicePLCActivity.this, "Send message:"+CMDTest, Toast.LENGTH_LONG).show();
+            ETCMDTest.setText("");
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,6 +206,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         deviceId = extras.getString("deviceId");
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
+        ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
         mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
         mDevice.addValueEventListener(new ValueEventListener() {
             @Override
