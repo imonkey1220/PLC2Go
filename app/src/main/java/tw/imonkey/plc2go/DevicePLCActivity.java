@@ -70,7 +70,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     private void respondRX(){
         TVRX =(TextView)findViewById(R.id.textViewRX);
         mRespond= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/RX/");
-        mRespond.addChildEventListener(new ChildEventListener() {
+        mRespond.limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
