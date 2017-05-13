@@ -49,7 +49,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
     boolean master;
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
-    DatabaseReference mFriends, mDevice,mRespond;
+    ArrayList<String> CMDs = new ArrayList<>();
+    DatabaseReference mFriends, mDevice,mRespond,mRequest;
 
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
@@ -61,7 +62,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
-//        reqestMode();
+//
         respondRX();
 
     }
@@ -91,7 +92,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     public void onClickTEST(View v){
         String CMDTest= ETCMDTest.getText().toString().trim();
         if (!TextUtils.isEmpty(CMDTest)){
-            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
+            mRequest= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
             Map<String, Object> CMD = new HashMap<>();
             CMD.clear();
             CMD.put("message",CMDTest);
@@ -116,6 +117,42 @@ public class DevicePLCActivity extends AppCompatActivity  {
             Toast.makeText(DevicePLCActivity.this, "Send message:"+CMDTest, Toast.LENGTH_LONG).show();
             ETCMDTest.setText("");
         }
+    }
+
+    public void onClickDEL(View v){
+        mRequest.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                CMDs.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    CMDs.add(childSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLCActivity.this);
+        dialog_list.setTitle("選擇要刪除的CMD");
+        dialog_list.setItems(CMDs.toArray(new String[0]), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(DevicePLCActivity.this, "你要刪除是" + CMDs.get(which), Toast.LENGTH_SHORT).show();
+                mRequest.orderByValue().equalTo(CMDs.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            childSnapshot.getRef().removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                CMDs.remove(which);
+            }
+        });
+        dialog_list.show();
     }
 
 
