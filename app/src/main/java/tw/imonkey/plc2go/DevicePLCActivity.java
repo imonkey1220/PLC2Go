@@ -50,7 +50,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
     ArrayList<String> CMDs = new ArrayList<>();
-    DatabaseReference mFriends, mDevice,mRespond,mRequest;
+    DatabaseReference mFriends,mDevice,mRespond,mRequest,mCMDDel, mCMDSave;
 
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
@@ -99,28 +99,22 @@ public class DevicePLCActivity extends AppCompatActivity  {
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
             mRequest.push().setValue(CMD);
-            Toast.makeText(DevicePLCActivity.this, "Send message:"+CMDTest, Toast.LENGTH_LONG).show();
-            ETCMDTest.setText("");
+            Toast.makeText(DevicePLCActivity.this, "Test CMD:"+CMDTest, Toast.LENGTH_LONG).show();
         }
     }
 
     public void onClickSAVE(View v){
         String CMDTest= ETCMDTest.getText().toString().trim();
         if (!TextUtils.isEmpty(CMDTest)){
-            DatabaseReference  mRequest= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
-            Map<String, Object> CMD = new HashMap<>();
-            CMD.clear();
-            CMD.put("message",CMDTest);
-            CMD.put("memberEmail",memberEmail);
-            CMD.put("timeStamp", ServerValue.TIMESTAMP);
-            mRequest.push().setValue(CMD);
-            Toast.makeText(DevicePLCActivity.this, "Send message:"+CMDTest, Toast.LENGTH_LONG).show();
-            ETCMDTest.setText("");
+            mCMDSave= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
+            mCMDSave.push().setValue(CMDTest);
+            Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDTest, Toast.LENGTH_LONG).show();
         }
     }
 
     public void onClickDEL(View v){
-        mRequest.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        mCMDDel=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
+        mCMDDel.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 CMDs.clear();
@@ -137,8 +131,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
         dialog_list.setItems(CMDs.toArray(new String[0]), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(DevicePLCActivity.this, "你要刪除是" + CMDs.get(which), Toast.LENGTH_SHORT).show();
-                mRequest.orderByValue().equalTo(CMDs.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
+                Toast.makeText(DevicePLCActivity.this, "DEL CMD:" + CMDs.get(which), Toast.LENGTH_SHORT).show();
+                mCMDDel.orderByValue().equalTo(CMDs.get(which)).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
@@ -277,6 +271,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
         PLC_Protocol();
         PLC_No();
         PLC_Mode();
@@ -289,6 +284,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("0000");
         items.add("00FF");
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
