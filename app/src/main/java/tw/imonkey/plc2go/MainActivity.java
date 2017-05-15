@@ -153,7 +153,7 @@ public class MainActivity extends Activity {
                         Calendar timeStamp = Calendar.getInstance();
                         timeStamp.setTimeInMillis(Long.parseLong(device.getAlert().get("timeStamp").toString()));
                         SimpleDateFormat df = new SimpleDateFormat("HH:mm MM/dd", Locale.TAIWAN);
-                        ((TextView) view.findViewById(R.id.deviceMessage)).setText(device.getAlert().get("message").toString() + "#" + df.format(timeStamp.getTime()));
+                        ((TextView) view.findViewById(R.id.deviceMessage)).setText(device.getAlert().get("message").toString() + "\n" + df.format(timeStamp.getTime()));
                     } else {
                         ((TextView) view.findViewById(R.id.deviceMessage)).setText("");
                     }

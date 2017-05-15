@@ -113,19 +113,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     }
 
     public void onClickDEL(View v){
-        mCMDDel=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
-        mCMDDel.orderByKey().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                CMDs.clear();
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    CMDs.add(childSnapshot.getValue().toString());
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+
         AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLCActivity.this);
         dialog_list.setTitle("選擇要刪除的CMD");
         dialog_list.setItems(CMDs.toArray(new String[0]), new DialogInterface.OnClickListener() {
@@ -265,6 +253,20 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 friends.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     friends.add(childSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mCMDDel=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
+        mCMDDel.orderByKey().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                CMDs.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    CMDs.add(childSnapshot.getValue().toString());
                 }
             }
             @Override
