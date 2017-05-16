@@ -573,7 +573,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
 
     public void buttonSendMessageOnClick(View view){
         EditText editTextTalk=(EditText)findViewById(R.id.editTextTalk);
-        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/log/"+deviceId);
+        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
         if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
             Map<String, Object> addMessage = new HashMap<>();
             addMessage.put("message","Gotcha:"+memberEmail);
