@@ -129,15 +129,16 @@ public class MainActivity extends Activity {
             protected void populateView(View view, Device device, int position) {
                 if (device.getTopics_id()!=null && device.getCompanyId()!=null && device.getDevice()!=null) {
                     FirebaseMessaging.getInstance().subscribeToTopic(device.getTopics_id());
-                    if (device.getConnection() != null) {
+                    if (device.getDeviceType().equals("主機")) {
+                        ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
+                    }else if (device.getConnection() != null) {
                         ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
                     } else {
                         ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "離線" + ":" + device.getDescription());
                     }
 
-                    if (device.getDeviceType().equals("主機")){
-                        ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
-                    }
+
+
 
                     String devicePhotoPath = "/devicePhoto/" + device.getTopics_id();
                     mImageRef = FirebaseStorage.getInstance().getReference(devicePhotoPath);
@@ -146,16 +147,16 @@ public class MainActivity extends Activity {
                             .using(new FirebaseImageLoader())
                             .load(mImageRef)
                             .into(imageView);
-                    ((TextView) view.findViewById(R.id.deviceType)).setText(device.getDeviceType());
-
 
                     if (device.getAlert().get("message") != null) {
                         Calendar timeStamp = Calendar.getInstance();
                         timeStamp.setTimeInMillis(Long.parseLong(device.getAlert().get("timeStamp").toString()));
-                        SimpleDateFormat df = new SimpleDateFormat("HH:mm MM/dd", Locale.TAIWAN);
-                        ((TextView) view.findViewById(R.id.deviceMessage)).setText(device.getAlert().get("message").toString() + "\n" + df.format(timeStamp.getTime()));
+                        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd", Locale.TAIWAN);
+                        ((TextView) view.findViewById(R.id.deviceMessage)).setText(device.getAlert().get("message").toString());
+                        ((TextView) view.findViewById(R.id.deviceType)).setText(df.format(timeStamp.getTime())+"  "+device.getDeviceType());
                     } else {
                         ((TextView) view.findViewById(R.id.deviceMessage)).setText("");
+                        ((TextView) view.findViewById(R.id.deviceType)).setText(device.getDeviceType());
                     }
                 }
             }

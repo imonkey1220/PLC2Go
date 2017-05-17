@@ -20,6 +20,7 @@
             android:id="@+id/deviceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:paddingTop="5dp"
             android:textColor="@android:color/holo_blue_light"
             android:textSize="18sp" />
@@ -28,14 +29,18 @@
             android:id="@+id/deviceMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="2"
+            android:maxLines="2"
+            android:minLines="2"
             android:paddingTop="5dp"
             android:textColor="?android:attr/colorControlActivated"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/deviceType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:textAlignment="viewEnd"
             android:textColor="?android:attr/colorPressedHighlight"
             android:textSize="14sp" />
