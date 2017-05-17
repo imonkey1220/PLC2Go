@@ -191,6 +191,16 @@ public class MainActivity extends Activity {
                                 intent.putExtra("master", false);
                             }
                             startActivity(intent);
+                        }else if(deviceType.equals("GPIO機")){
+                            Intent intent = new Intent(MainActivity.this, DevicePLCActivity.class);
+                            intent.putExtra("deviceId", deviceId);
+                            intent.putExtra("memberEmail", memberEmail);
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                                intent.putExtra("master", true);
+                            }else{
+                                intent.putExtra("master", false);
+                            }
+                            startActivity(intent);
                         }
 
                     }

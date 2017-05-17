@@ -72,7 +72,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             protected void populateView(View view, Message message, int position) {
                 Calendar timeStamp= Calendar.getInstance();
                 timeStamp.setTimeInMillis(message.getTimeStamp());
-                SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm", Locale.TAIWAN);
+                SimpleDateFormat df = new SimpleDateFormat(" HH:mm:ss MM/dd", Locale.TAIWAN);
                 if (position%2==0) {
                     ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
                     ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.BLUE);
@@ -536,7 +536,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                         setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "上線");
                     } else {
                         setTitle(snapshot.child("companyId").getValue().toString() + "." + snapshot.child("device").getValue().toString() + "." + "離線");
-                        Toast.makeText(DeviceRPI3IOActivity.this, "PLC智慧機離線", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DeviceRPI3IOActivity.this, "GPIO智慧機離線", Toast.LENGTH_LONG).show();
                     }
                 }
             }

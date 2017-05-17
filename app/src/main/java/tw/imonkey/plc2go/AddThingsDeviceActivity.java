@@ -135,7 +135,7 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
         Map<String, Object> addMaster = new HashMap<>();
         addMaster.put("companyId",companyId) ;
         addMaster.put("device",device);
-        addMaster.put("deviceType",deviceType); //PLC監控機
+        addMaster.put("deviceType",deviceType); //PLC監控機;GPIO智慧機
         addMaster.put("description",description);
         addMaster.put("masterEmail",memberEmail) ;
         addMaster.put("timeStamp", ServerValue.TIMESTAMP);
