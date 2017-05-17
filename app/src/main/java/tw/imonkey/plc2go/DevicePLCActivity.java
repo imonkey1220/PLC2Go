@@ -286,6 +286,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No = (Spinner) findViewById(R.id.spinnerPLCNo);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("");
         items.add("0000");
         items.add("00FF");
         // Creating adapter for spinner
@@ -305,6 +306,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
         });
     }
@@ -314,6 +316,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode = (Spinner) findViewById(R.id.spinnerMode);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("");
         items.add("BR"); // read bit
         items.add("WR"); // read word
         items.add("BW"); // write bit
@@ -335,6 +338,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
         });
     }
@@ -344,6 +348,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode = (Spinner) findViewById(R.id.spinnerDelayTime);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("");
         items.add("0");
         items.add("5");
         items.add("A");
@@ -365,6 +370,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
         });
     }
@@ -377,6 +383,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register = (Spinner) findViewById(R.id.spinnerRegister);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("");
         items.add("M0000");// bit register
         items.add("M0010");// bit register
         items.add("M0020");// bit register
@@ -402,6 +409,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
         });
 
@@ -411,6 +419,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block = (Spinner) findViewById(R.id.spinnerBlock);
         // Spinner Drop down elements
         final List<String> items = new ArrayList<>();
+        items.add("");
         items.add("01");
         items.add("02");
         items.add("03");
@@ -445,6 +454,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
             }
         });
     }

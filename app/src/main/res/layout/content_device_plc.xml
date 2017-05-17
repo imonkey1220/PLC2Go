@@ -21,41 +21,124 @@
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="parent">
 
-        <Spinner
-            android:id="@+id/spinnerProtocol"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Protocol"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerProtocol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="PLCNo"
+                android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinnerPLCNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mode"
+                android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinnerMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DelayTime"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinnerDelayTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Register"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinnerRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Block"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinnerBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+    </LinearLayout>
 
         <TextView
             android:id="@+id/textViewRX"
@@ -63,6 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="RX"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -78,7 +162,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="CMD"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@android:color/holo_blue_bright" />
 
             <Button
                 android:id="@+id/buttoncmdTEST"
@@ -101,7 +186,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="onClickDEL"
                 android:text="DEL" />
 
         </LinearLayout>
@@ -109,3 +193,4 @@
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
+
