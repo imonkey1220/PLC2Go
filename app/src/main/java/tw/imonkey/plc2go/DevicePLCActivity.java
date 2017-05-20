@@ -428,6 +428,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
         items.add("06");
         items.add("07");
         items.add("08");
+        items.add("09");
         items.add("0A");
         items.add("0B");
         items.add("0C");
