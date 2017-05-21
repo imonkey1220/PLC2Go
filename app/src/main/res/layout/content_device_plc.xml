@@ -144,10 +144,11 @@
             android:id="@+id/textViewRX"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/shape_rectangle"
             android:text="RX"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
