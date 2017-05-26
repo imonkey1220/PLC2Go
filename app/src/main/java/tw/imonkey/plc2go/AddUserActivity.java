@@ -3,6 +3,7 @@ package tw.imonkey.plc2go;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -29,10 +30,12 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static tw.imonkey.plc2go.MainActivity.devicePrefs;
 
 public class AddUserActivity extends AppCompatActivity {
     private static final int RC_CHOOSE_PHOTO = 101;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE =102 ;
     //private static final int RC_IMAGE_PERMS = 102;
     StorageReference mImageRef;
     DatabaseReference mUserFile, mAddDevice ,mAddMaster;
@@ -53,6 +56,23 @@ public class AddUserActivity extends AppCompatActivity {
         editTextAddCompanyId = (EditText) (findViewById(R.id.editTextAddCompanyId));
         editTextAddUser = (EditText) (findViewById(R.id.editTextAddUser));
         editTextAddDescription = (EditText) (findViewById(R.id.editTextAddDescription));
+        if (checkSelfPermission(READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
+            return;
+        }
 
     }
 

@@ -3,6 +3,7 @@ package tw.imonkey.plc2go;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -32,13 +33,16 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static tw.imonkey.plc2go.MainActivity.devicePrefs;
+
 
 public class AddThingsDeviceActivity extends AppCompatActivity {
     private static final int RC_CHOOSE_PHOTO = 101;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE =102;
     //private static final int RC_IMAGE_PERMS = 102;
     StorageReference mImageRef;
-    String memberEmail,deviceId,companyId,device,deviceType,description;
+    String memberEmail,deviceId,companyId,device,deviceType,description,serverIP;
     private WebSocketClient mWebSocketClient;
     ImageView imageViewAddDevice;
     Uri selectedImage ;
@@ -61,6 +65,24 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
         editTextAddDevice = (EditText) (findViewById(R.id.editTextAddThingsDevice));
         editTextAddDescription = (EditText) (findViewById(R.id.editTextAddThingsDescription));
         editTextServerIP = (EditText) (findViewById(R.id.editTextThingsIP));
+        if (checkSelfPermission(READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
+            return;
+        }
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,24 +96,6 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "No image chosen", Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    public void addThingsDevice(View view) {
-        String companyId = editTextAddCompanyId.getText().toString().trim();
-        String device = editTextAddDevice.getText().toString().trim();
-        String description = editTextAddDescription.getText().toString().trim();
-        String serverIP = editTextServerIP.getText().toString().trim();
-        if (!(TextUtils.isEmpty(serverIP) || TextUtils.isEmpty(companyId) || TextUtils.isEmpty(device) || TextUtils.isEmpty(description))) {
-            toFirebase();
-            connectWebSocket(serverIP);
-            if (selectedImage != null) {
-                uploadPhoto(selectedImage);
-            }
-
-            Toast.makeText(this, "add device...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(AddThingsDeviceActivity.this, MainActivity.class);
-            startActivity(intent);
         }
     }
 
@@ -152,6 +156,10 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
         addDevice.put("timeStamp",ServerValue.TIMESTAMP);
         addDevice.put("topics_id",deviceId) ;
         mAddDevice.setValue(addDevice);
+
+        if (selectedImage != null) {
+            uploadPhoto(selectedImage);
+        }
     }
 
     private void connectWebSocket(String serverIP) {
@@ -177,6 +185,20 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
             public void onError(Exception e) {}
         };
         mWebSocketClient.connect();
+    }
+
+    public void addThingsDevice(View view) {
+         companyId = editTextAddCompanyId.getText().toString().trim();
+         device = editTextAddDevice.getText().toString().trim();
+         description = editTextAddDescription.getText().toString().trim();
+         serverIP = editTextServerIP.getText().toString().trim();
+        if (!(TextUtils.isEmpty(serverIP) || TextUtils.isEmpty(companyId) || TextUtils.isEmpty(device) || TextUtils.isEmpty(description))) {
+            toFirebase();
+            connectWebSocket(serverIP);
+            Toast.makeText(this, "add device...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AddThingsDeviceActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }
 
