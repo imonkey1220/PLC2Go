@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
                             .load(mImageRef)
                             .into(imageView);
 
-                    if (device.getAlert().get("message") != null) {
+                    if (device.getAlert().get("message") != null && device.getCompanyId()!=null) {
                         Calendar timeStamp = Calendar.getInstance();
                         timeStamp.setTimeInMillis(Long.parseLong(device.getAlert().get("timeStamp").toString()));
                         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd", Locale.TAIWAN);
