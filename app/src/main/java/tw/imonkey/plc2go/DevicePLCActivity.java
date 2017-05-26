@@ -147,6 +147,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
         });
         dialog_list.show();
+
+        PLC_Protocol();
+        PLC_No();
+        PLC_Mode();
+        PLC_Delay();
+        PLC_Register();
+        Register_Block();
     }
 
 
