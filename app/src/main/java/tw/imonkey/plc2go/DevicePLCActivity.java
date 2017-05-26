@@ -101,6 +101,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
             mRequest.push().setValue(CMD);
             Toast.makeText(DevicePLCActivity.this, "Test CMD:"+CMDTest, Toast.LENGTH_LONG).show();
         }
+        PLC_Protocol();
+        PLC_No();
+        PLC_Mode();
+        PLC_Delay();
+        PLC_Register();
+        Register_Block();
     }
 
     public void onClickSAVE(View v){
@@ -110,7 +116,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
             mCMDSave.push().setValue(CMDTest);
             Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDTest, Toast.LENGTH_LONG).show();
         }
-        ETCMDTest.setText("");
+        PLC_Protocol();
+        PLC_No();
+        PLC_Mode();
+        PLC_Delay();
+        PLC_Register();
+        Register_Block();
     }
 
     public void onClickDEL(View v){
