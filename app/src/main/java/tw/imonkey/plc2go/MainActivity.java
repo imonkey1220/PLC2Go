@@ -137,9 +137,6 @@ public class MainActivity extends Activity {
                         ((TextView) view.findViewById(R.id.deviceName)).setText(device.getCompanyId() + "." + device.getDevice() + "." + "離線" + ":" + device.getDescription());
                     }
 
-
-
-
                     String devicePhotoPath = "/devicePhoto/" + device.getTopics_id();
                     mImageRef = FirebaseStorage.getInstance().getReference(devicePhotoPath);
                     ImageView imageView = (ImageView) view.findViewById(R.id.deviceImage);
@@ -148,7 +145,7 @@ public class MainActivity extends Activity {
                             .load(mImageRef)
                             .into(imageView);
 
-                    if (device.getAlert().get("message") != null && device.getCompanyId()!=null) {
+                    if (device.getAlert().get("message") != null) {
                         Calendar timeStamp = Calendar.getInstance();
                         timeStamp.setTimeInMillis(Long.parseLong(device.getAlert().get("timeStamp").toString()));
                         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd", Locale.TAIWAN);
@@ -158,6 +155,8 @@ public class MainActivity extends Activity {
                         ((TextView) view.findViewById(R.id.deviceMessage)).setText("");
                         ((TextView) view.findViewById(R.id.deviceType)).setText(device.getDeviceType());
                     }
+                }else{
+
                 }
             }
         };
