@@ -110,6 +110,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             mCMDSave.push().setValue(CMDTest);
             Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDTest, Toast.LENGTH_LONG).show();
         }
+        ETCMDTest.setText("");
     }
 
     public void onClickDEL(View v){
