@@ -50,7 +50,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
     ArrayList<String> CMDs = new ArrayList<>();
-    DatabaseReference mFriends,mDevice,mRespond,mRequest,mCMDDel, mCMDSave;
+    DatabaseReference  mLog,mFriends,mDevice,mRX,mTX,mCMDDel, mCMDSave;
 
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
@@ -61,16 +61,16 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_device_plc);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         init();
-//
         respondRX();
+
 
     }
 
     private void respondRX(){
         TVRX =(TextView)findViewById(R.id.textViewRX);
-        mRespond= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/RX/");
-        mRespond.limitToLast(1).addChildEventListener(new ChildEventListener() {
+        mRX.limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -92,14 +92,16 @@ public class DevicePLCActivity extends AppCompatActivity  {
     public void onClickTEST(View v){
         String CMDTest= ETCMDTest.getText().toString().trim();
         if (!TextUtils.isEmpty(CMDTest)){
-            mRequest= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
+
             Map<String, Object> CMD = new HashMap<>();
             CMD.clear();
             CMD.put("message",CMDTest);
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
-            mRequest.push().setValue(CMD);
-            Toast.makeText(DevicePLCActivity.this, "Test CMD:"+CMDTest, Toast.LENGTH_LONG).show();
+            mTX.push().setValue(CMD);
+            CMD.put("message","Test CMD:"+CMDTest);
+            mLog.push().setValue(CMD);
+            Toast.makeText(DevicePLCActivity.this, "Test CMD:"+CMDTest, Toast.LENGTH_SHORT).show();
         }
         PLC_Protocol();
         PLC_No();
@@ -110,11 +112,18 @@ public class DevicePLCActivity extends AppCompatActivity  {
     }
 
     public void onClickSAVE(View v){
-        String CMDTest= ETCMDTest.getText().toString().trim();
-        if (!TextUtils.isEmpty(CMDTest)){
+        String CMDSave= ETCMDTest.getText().toString().trim();
+        if (!TextUtils.isEmpty(CMDSave)){
+            Map<String, Object> CMD = new HashMap<>();
+            CMD.clear();
+            CMD.put("message",CMDSave);
+            CMD.put("memberEmail",memberEmail);
+            CMD.put("timeStamp", ServerValue.TIMESTAMP);
             mCMDSave= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
-            mCMDSave.push().setValue(CMDTest);
-            Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDTest, Toast.LENGTH_LONG).show();
+            mCMDSave.push().setValue(CMD);
+            CMD.put("message","Save CMD:"+CMDSave);
+            mLog.push().setValue(CMD);
+            Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDSave, Toast.LENGTH_SHORT).show();
         }
         PLC_Protocol();
         PLC_No();
@@ -125,13 +134,19 @@ public class DevicePLCActivity extends AppCompatActivity  {
     }
 
     public void onClickDEL(View v){
-
         AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLCActivity.this);
         dialog_list.setTitle("選擇要刪除的CMD");
         dialog_list.setItems(CMDs.toArray(new String[0]), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Map<String, Object> CMD = new HashMap<>();
+                CMD.clear();
+                CMD.put("message","DEL CMD:"+CMDs.get(which));
+                CMD.put("memberEmail",memberEmail);
+                CMD.put("timeStamp", ServerValue.TIMESTAMP);
+                mLog.push().setValue(CMD);
                 Toast.makeText(DevicePLCActivity.this, "DEL CMD:" + CMDs.get(which), Toast.LENGTH_SHORT).show();
+
                 mCMDDel.orderByValue().equalTo(CMDs.get(which)).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -245,6 +260,9 @@ public class DevicePLCActivity extends AppCompatActivity  {
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
         ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
+        mTX= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
+        mRX= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/RX/");
+        mLog=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
         mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
         mDevice.addValueEventListener(new ValueEventListener() {
             @Override
@@ -504,5 +522,9 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void Register_Data(){
+
     }
 }
