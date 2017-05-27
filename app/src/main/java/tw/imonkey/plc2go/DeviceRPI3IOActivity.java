@@ -45,7 +45,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     Map<String, Object> log = new HashMap<>();
     DatabaseReference mFriends,mDevice,mLog, mXINPUT,mYOUTPUT;
     FirebaseListAdapter mAdapter;
-    ListView deviceView ;
+    ListView deviceView ,logView;
     Switch Y00,Y01,Y02,Y03,Y04,Y05,Y06,Y07;
     TextView X00,X01,X02,X03,X04,X05,X06,X07;
 
@@ -61,7 +61,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
 
         Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
-        deviceView = (ListView) findViewById(R.id.listViewDevice);
+        logView = (ListView) findViewById(R.id.listViewLog);
         mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
             @Override
             public Message getItem(int position) {
@@ -84,7 +84,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
 
             }
         };
-        deviceView.setAdapter(mAdapter);
+        logView.setAdapter(mAdapter);
 
         mYOUTPUT=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/Y/");
         Y00.setOnClickListener(new View.OnClickListener() {

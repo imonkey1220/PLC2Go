@@ -1,6 +1,7 @@
 package tw.imonkey.plc2go;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,17 +20,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -47,11 +53,11 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     String deviceId, memberEmail;
     boolean master;
-    ListView deviceView;
+    ListView deviceView,logView;
     ArrayList<String> friends = new ArrayList<>();
     ArrayList<String> CMDs = new ArrayList<>();
     DatabaseReference  mLog,mFriends,mDevice,mRX,mTX,mCMDDel, mCMDSave;
-
+    FirebaseListAdapter mAdapter;
     EditText ETCMDTest;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
     TextView TVRX;
@@ -61,6 +67,34 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_device_plc);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mLog=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/").limitToLast(25);
+        logView = (ListView) findViewById(R.id.listViewLog);
+        mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
+            @Override
+            public Message getItem(int position) {
+                return super.getItem(getCount() - (position + 1)); //反轉排序
+            }
+
+            @Override
+            protected void populateView(View view, Message message, int position) {
+                Calendar timeStamp= Calendar.getInstance();
+                timeStamp.setTimeInMillis(message.getTimeStamp());
+                SimpleDateFormat df = new SimpleDateFormat(" HH:mm:ss MM/dd", Locale.TAIWAN);
+                if (position%2==0) {
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.BLUE);
+                }else{
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.RED);
+                }
+                ((TextView)view.findViewById(android.R.id.text2)).setText((df.format(timeStamp.getTime())));
+
+            }
+        };
+        logView.setAdapter(mAdapter);
+
 
         init();
         respondRX();
@@ -317,6 +351,25 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Delay();
         PLC_Register();
         Register_Block();
+    }
+
+    public void buttonSendMessageOnClick(View view){
+        EditText editTextTalk=(EditText)findViewById(R.id.editTextTalk);
+        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
+        if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
+            Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("message","Gotcha:"+memberEmail);
+            addMessage.put("timeStamp", ServerValue.TIMESTAMP);
+            mTalk.push().setValue(addMessage);
+            Toast.makeText(DevicePLCActivity.this, "Gotcha!", Toast.LENGTH_LONG).show();
+        }else{
+            Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("message","Gotcha:"+memberEmail+"->"+editTextTalk.getText().toString().trim());
+            addMessage.put("timeStamp", ServerValue.TIMESTAMP);
+            mTalk.push().setValue(addMessage);
+            Toast.makeText(DevicePLCActivity.this,editTextTalk.getText().toString().trim(), Toast.LENGTH_LONG).show();
+            editTextTalk.setText("");
+        }
     }
     private void PLC_No(){
         // Spinner element
