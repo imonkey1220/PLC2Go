@@ -36,7 +36,7 @@ import static tw.imonkey.plc2go.MainActivity.devicePrefs;
 public class AddUserActivity extends AppCompatActivity {
     private static final int RC_CHOOSE_PHOTO = 101;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE =102 ;
-    //private static final int RC_IMAGE_PERMS = 102;
+    //private static final int RC_IMAGE_PERMS = 103;
     StorageReference mImageRef;
     DatabaseReference mUserFile, mAddDevice ,mAddMaster;
     String memberEmail,deviceId ,token;// deviceId=shopId=topics_id
