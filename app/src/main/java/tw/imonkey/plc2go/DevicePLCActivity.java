@@ -58,7 +58,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     String deviceId, memberEmail;
     boolean master;
-    private Boolean exit = false;
     ListView deviceView,logView;
     ArrayList<String> friends = new ArrayList<>();
     ArrayList<String> CMDs = new ArrayList<>();
@@ -291,23 +290,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (exit) {
-            finish(); // finish activity
-        } else {
-            Toast.makeText(this, "再按一次退出App?",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
         }
     }
 

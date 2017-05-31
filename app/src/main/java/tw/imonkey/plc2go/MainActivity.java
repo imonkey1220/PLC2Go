@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseListAdapter mDeviceAdapter;
     StorageReference mImageRef;
+    private Boolean exit = false;
     public static final String devicePrefs = "devicePrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,23 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mDeviceAdapter.cleanup();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "再按一次退出App?",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+        }
     }
 
     private void memberCheck(){
@@ -155,8 +174,6 @@ public class MainActivity extends Activity {
                         ((TextView) view.findViewById(R.id.deviceMessage)).setText("");
                         ((TextView) view.findViewById(R.id.deviceType)).setText(device.getDeviceType());
                     }
-                }else{
-
                 }
             }
         };
