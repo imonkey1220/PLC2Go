@@ -1,12 +1,16 @@
 package tw.imonkey.plc2go;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,12 +58,14 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     String deviceId, memberEmail;
     boolean master;
+    private Boolean exit = false;
     ListView deviceView,logView;
     ArrayList<String> friends = new ArrayList<>();
     ArrayList<String> CMDs = new ArrayList<>();
     DatabaseReference  mLog,mFriends,mDevice,mRX,mTX,mCMDDel, mCMDSave;
     FirebaseListAdapter mAdapter;
     EditText ETCMDTest;
+    EditText ETData;
     Spinner PLC_Protocol,PLC_Mode,PLC_No,PLC_Register,Register_Block;
     TextView TVRX;
     @Override
@@ -287,6 +294,23 @@ public class DevicePLCActivity extends AppCompatActivity  {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "再按一次退出App?",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+        }
+    }
+
     private void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
         Bundle extras = getIntent().getExtras();
@@ -316,7 +340,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
         });
 
-
         mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");
         mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -342,6 +365,22 @@ public class DevicePLCActivity extends AppCompatActivity  {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        ETData=(EditText) findViewById(R.id.editTextData);
+        ETData.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                cmd[4]=ETData.getText().toString().trim();
+                    ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 
@@ -425,10 +464,30 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 cmd[1]=items.get(position);
                 ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                if (items.get(position).equals("BW")||items.get(position).equals("WW")){
+                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
+                    LWriteMode.setVisibility(View.VISIBLE);
+                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
+                    LReadMode.setVisibility(View.INVISIBLE);
+                }else if (items.get(position).equals("BR")||items.get(position).equals("WR")){
+                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
+                    LWriteMode.setVisibility(View.INVISIBLE);
+                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
+                    LReadMode.setVisibility(View.VISIBLE);
+                }else{
+                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
+                    LWriteMode.setVisibility(View.INVISIBLE);
+                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
+                    LReadMode.setVisibility(View.INVISIBLE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
+                LWriteMode.setVisibility(View.INVISIBLE);
+                LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
+                LReadMode.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -575,9 +634,5 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    private void Register_Data(){
-
     }
 }

@@ -123,9 +123,11 @@ public class AddUserActivity extends AppCompatActivity {
             if (selectedImage!=null) {
                 uploadPhoto(selectedImage);
             }
-
             Toast.makeText(this, "add user...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AddUserActivity.this,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
     }
