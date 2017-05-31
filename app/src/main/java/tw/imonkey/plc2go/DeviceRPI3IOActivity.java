@@ -59,7 +59,6 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         init();
 
         mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
-
         Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
         logView = (ListView) findViewById(R.id.listViewLog);
         mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {

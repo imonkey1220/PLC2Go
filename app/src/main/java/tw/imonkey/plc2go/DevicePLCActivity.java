@@ -73,39 +73,8 @@ public class DevicePLCActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_device_plc);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mLog=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
-        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/").limitToLast(25);
-        logView = (ListView) findViewById(R.id.listViewLog);
-        mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
-            @Override
-            public Message getItem(int position) {
-                return super.getItem(getCount() - (position + 1)); //反轉排序
-            }
-
-            @Override
-            protected void populateView(View view, Message message, int position) {
-                Calendar timeStamp= Calendar.getInstance();
-                timeStamp.setTimeInMillis(message.getTimeStamp());
-                SimpleDateFormat df = new SimpleDateFormat(" HH:mm:ss MM/dd", Locale.TAIWAN);
-                if (position%2==0) {
-                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
-                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.BLUE);
-                }else{
-                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
-                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.RED);
-                }
-                ((TextView)view.findViewById(android.R.id.text2)).setText((df.format(timeStamp.getTime())));
-
-            }
-        };
-        logView.setAdapter(mAdapter);
-
-
         init();
         respondRX();
-
-
     }
 
     private void respondRX(){
@@ -365,6 +334,32 @@ public class DevicePLCActivity extends AppCompatActivity  {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/").limitToLast(25);
+        logView = (ListView) findViewById(R.id.listViewLog);
+        mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
+            @Override
+            public Message getItem(int position) {
+                return super.getItem(getCount() - (position + 1)); //反轉排序
+            }
+
+            @Override
+            protected void populateView(View view, Message message, int position) {
+                Calendar timeStamp= Calendar.getInstance();
+                timeStamp.setTimeInMillis(message.getTimeStamp());
+                SimpleDateFormat df = new SimpleDateFormat(" HH:mm:ss MM/dd", Locale.TAIWAN);
+                if (position%2==0) {
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.BLUE);
+                }else{
+                    ((TextView) view.findViewById(android.R.id.text1)).setText(message.getMessage());
+                    ((TextView) view.findViewById(android.R.id.text1)).setTextColor(Color.RED);
+                }
+                ((TextView)view.findViewById(android.R.id.text2)).setText((df.format(timeStamp.getTime())));
+
+            }
+        };
+        logView.setAdapter(mAdapter);
 
         PLC_Protocol();
         PLC_No();
