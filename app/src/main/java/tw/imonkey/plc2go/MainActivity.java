@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseListAdapter mDeviceAdapter;
     StorageReference mImageRef;
-    private Boolean exit = false;
+    Boolean exit = false;
     public static final String devicePrefs = "devicePrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
