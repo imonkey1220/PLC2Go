@@ -123,13 +123,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
     public void onClickSAVE(View v){
         String CMDSave= ETCMDTest.getText().toString().trim();
         if (!TextUtils.isEmpty(CMDSave)){
+            mCMDSave= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
+            mCMDSave.push().setValue(CMDSave);
             Map<String, Object> CMD = new HashMap<>();
             CMD.clear();
-            CMD.put("message",CMDSave);
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
-            mCMDSave= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/SETTINGS/CMD/");
-            mCMDSave.push().setValue(CMD);
             CMD.put("message","Save CMD:"+CMDSave);
             mLog.push().setValue(CMD);
             Toast.makeText(DevicePLCActivity.this, "Save CMD:"+CMDSave, Toast.LENGTH_SHORT).show();
