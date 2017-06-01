@@ -228,9 +228,9 @@
                 android:layout_gravity="left"
                 android:layout_weight="0.9"
                 android:ems="15"
-                android:hint="Message.............."
+                android:hint="Talk.............."
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/buttonSendMessage"
