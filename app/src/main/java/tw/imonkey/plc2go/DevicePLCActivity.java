@@ -405,9 +405,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_No.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[0]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                }
+                    cmd[0] = items.get(position);
+                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -437,26 +440,28 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[1]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
-                if (items.get(position).equals("BW")||items.get(position).equals("WW")){
-                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
-                    LWriteMode.setVisibility(View.VISIBLE);
-                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
-                    LReadMode.setVisibility(View.INVISIBLE);
-                }else if (items.get(position).equals("BR")||items.get(position).equals("WR")){
-                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
-                    LWriteMode.setVisibility(View.INVISIBLE);
-                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
-                    LReadMode.setVisibility(View.VISIBLE);
-                }else{
-                    LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
-                    LWriteMode.setVisibility(View.INVISIBLE);
-                    LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
-                    LReadMode.setVisibility(View.INVISIBLE);
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
-            }
+                    cmd[1] = items.get(position);
+                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    if (items.get(position).equals("BW") || items.get(position).equals("WW")) {
+                        LinearLayout LWriteMode = (LinearLayout) findViewById(R.id.writeData);
+                        LWriteMode.setVisibility(View.VISIBLE);
+                        LinearLayout LReadMode = (LinearLayout) findViewById(R.id.readDataBlock);
+                        LReadMode.setVisibility(View.INVISIBLE);
+                    } else if (items.get(position).equals("BR") || items.get(position).equals("WR")) {
+                        LinearLayout LWriteMode = (LinearLayout) findViewById(R.id.writeData);
+                        LWriteMode.setVisibility(View.INVISIBLE);
+                        LinearLayout LReadMode = (LinearLayout) findViewById(R.id.readDataBlock);
+                        LReadMode.setVisibility(View.VISIBLE);
+                    } else {
+                        LinearLayout LWriteMode = (LinearLayout) findViewById(R.id.writeData);
+                        LWriteMode.setVisibility(View.INVISIBLE);
+                        LinearLayout LReadMode = (LinearLayout) findViewById(R.id.readDataBlock);
+                        LReadMode.setVisibility(View.INVISIBLE);
+                    }
+                }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
@@ -489,9 +494,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Mode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[2]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                }
+                    cmd[2] = items.get(position);
+                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -528,9 +536,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Register.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[3]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                }
+                    cmd[3] = items.get(position);
+                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -573,9 +584,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
-                cmd[4]=items.get(position);
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                }
+                    cmd[4] = items.get(position);
+                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+
             }
 
             @Override
@@ -604,7 +618,9 @@ public class DevicePLCActivity extends AppCompatActivity  {
         PLC_Protocol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                if (!items.get(position).equals("")) {
+                    Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

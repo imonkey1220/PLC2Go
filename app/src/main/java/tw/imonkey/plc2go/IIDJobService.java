@@ -5,9 +5,9 @@ import android.util.Log;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
-public class MyJobService extends JobService {
+public class IIDJobService extends com.firebase.jobdispatcher.JobService {
 
-    private static final String TAG = "MyJobService";
+    private static final String TAG = "JobService";
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
