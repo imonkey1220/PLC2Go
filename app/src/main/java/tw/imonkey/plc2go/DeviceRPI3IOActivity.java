@@ -57,6 +57,24 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
+        X00=(TextView) findViewById(R.id.textViewX00);
+        X01=(TextView) findViewById(R.id.textViewX01);
+        X02=(TextView) findViewById(R.id.textViewX02);
+        X03=(TextView) findViewById(R.id.textViewX03);
+        X04=(TextView) findViewById(R.id.textViewX04);
+        X05=(TextView) findViewById(R.id.textViewX05);
+        X06=(TextView) findViewById(R.id.textViewX06);
+        X07=(TextView) findViewById(R.id.textViewX07);
+
+        Y00=(Switch) findViewById(R.id.switchY00);
+        Y01=(Switch) findViewById(R.id.switchY01);
+        Y02=(Switch) findViewById(R.id.switchY02);
+        Y03=(Switch) findViewById(R.id.switchY03);
+        Y04=(Switch) findViewById(R.id.switchY04);
+        Y05=(Switch) findViewById(R.id.switchY05);
+        Y06=(Switch) findViewById(R.id.switchY06);
+        Y07=(Switch) findViewById(R.id.switchY07);
+
 
         mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
         Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);

@@ -208,7 +208,7 @@ public class MainActivity extends Activity {
                             }
                             startActivity(intent);
                         }else if(deviceType.equals("GPIO機")){
-                            Intent intent = new Intent(MainActivity.this, DevicePLCActivity.class);
+                            Intent intent = new Intent(MainActivity.this, DeviceRPI3IOActivity.class);
                             intent.putExtra("deviceId", deviceId);
                             intent.putExtra("memberEmail", memberEmail);
                             if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
