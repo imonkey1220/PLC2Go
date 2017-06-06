@@ -593,12 +593,14 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
         if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
             Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("memberEmail",memberEmail);
             addMessage.put("message","Gotcha:"+memberEmail);
             addMessage.put("timeStamp", ServerValue.TIMESTAMP);
             mTalk.push().setValue(addMessage);
             Toast.makeText(DeviceRPI3IOActivity.this, "Gotcha!", Toast.LENGTH_LONG).show();
         }else{
             Map<String, Object> addMessage = new HashMap<>();
+            addMessage.put("memberEmail",memberEmail);
             addMessage.put("message","Gotcha:"+memberEmail+"->"+editTextTalk.getText().toString().trim());
             addMessage.put("timeStamp", ServerValue.TIMESTAMP);
             mTalk.push().setValue(addMessage);
