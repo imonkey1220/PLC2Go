@@ -112,14 +112,14 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y00",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp", ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y00").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y00=true");
                 }else{
                     cmd.clear();
                     cmd.put("Y00",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y00").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y00=false");
 
                 }
@@ -133,7 +133,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y01",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y01").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y01=true");
 
                 }else{
@@ -141,7 +141,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y01",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y01").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y01=false");
 
                 }
@@ -156,7 +156,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y02",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y02").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y02=true");
 
                 }else{
@@ -164,7 +164,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y02",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y02").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y02=false");
 
                 }
@@ -179,7 +179,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y03",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y03").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y03=true");
 
                 }else{
@@ -187,7 +187,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y03",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y03").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y03=false");
                 }
             }
@@ -201,14 +201,14 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y04",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y04").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y04=true");
                 }else{
                     cmd.clear();
                     cmd.put("Y04",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y04").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y04=false");
 
                 }
@@ -222,7 +222,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y05",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y05").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y05=true");
 
                 }else{
@@ -230,7 +230,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y05",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y05").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y05=false");
 
                 }
@@ -245,7 +245,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y06",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y06").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y06=true");
 
                 }else{
@@ -253,7 +253,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y06",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y06").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y06=false");
 
                 }
@@ -268,7 +268,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y07",true);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y07").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y07=true");
 
                 }else{
@@ -276,69 +276,171 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     cmd.put("Y07",false);
                     cmd.put("memberEmail",memberEmail);
                     cmd.put("timeStamp",ServerValue.TIMESTAMP);
-                    mYOUTPUT.push().setValue(cmd);
+                    mYOUTPUT.child("Y07").push().setValue(cmd);
                     log("Y_input:"+memberEmail+"->Y07=false");
                 }
             }
         });
 
-
-        mYOUTPUT.limitToLast(100).addChildEventListener(new ChildEventListener() {
+        mYOUTPUT.child("Y00").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.child("Y00").getValue()!=null) {
-                    if(dataSnapshot.child("Y00").getValue().equals(true)) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y00.setChecked(true);
                     }else{
                         Y00.setChecked(false);
                     }
                 }
-                if (dataSnapshot.child("Y01").getValue()!=null) {
-                    if(dataSnapshot.child("Y01").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y01").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y01.setChecked(true);
                     }else{
                         Y01.setChecked(false);
                     }
                 }
-                if (dataSnapshot.child("Y02").getValue()!=null) {
-                    if(dataSnapshot.child("Y02").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y02").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y02.setChecked(true);
                     }else{
                         Y02.setChecked(false);
                     }
                 }
-                if (dataSnapshot.child("Y03").getValue()!=null) {
-                    if(dataSnapshot.child("Y03").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y03").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y03.setChecked(true);
                     }else{
                         Y03.setChecked(false);
                     }
                 }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
-                if (dataSnapshot.child("Y04").getValue()!=null) {
-                    if(dataSnapshot.child("Y04").getValue().equals(true)) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y04").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y04.setChecked(true);
                     }else{
                         Y04.setChecked(false);
                     }
                 }
-                if (dataSnapshot.child("Y05").getValue()!=null) {
-                    if(dataSnapshot.child("Y05").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y05").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y05.setChecked(true);
                     }else{
                         Y05.setChecked(false);
                     }
                 }
-                if (dataSnapshot.child("Y06").getValue()!=null) {
-                    if(dataSnapshot.child("Y06").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y06").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y06.setChecked(true);
                     }else{
                         Y06.setChecked(false);
                     }
                 }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
-                if (dataSnapshot.child("Y07").getValue()!=null) {
-                    if(dataSnapshot.child("Y07").getValue().equals(true)) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        mYOUTPUT.child("Y07").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         Y07.setChecked(true);
                     }else{
                         Y07.setChecked(false);
@@ -346,87 +448,203 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
 
         mXINPUT= FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/X/");
-        mXINPUT.limitToLast(100).addChildEventListener(new ChildEventListener() {
+        mXINPUT.child("X00").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.child("X00").getValue()!=null) {
-                    if(dataSnapshot.child("X00").getValue().equals(true)) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X00.setBackgroundColor(Color.RED);
                     }else{
                         X00.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X01").getValue()!=null) {
-                    if(dataSnapshot.child("X01").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X01").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X01.setBackgroundColor(Color.RED);
                     }else{
                         X01.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X02").getValue()!=null) {
-                    if(dataSnapshot.child("X02").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X02").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X02.setBackgroundColor(Color.RED);
                     }else{
                         X02.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X03").getValue()!=null) {
-                    if(dataSnapshot.child("X03").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X03").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X03.setBackgroundColor(Color.RED);
                     }else{
                         X03.setBackgroundColor(Color.BLUE);
                     }
                 }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
-                if (dataSnapshot.child("X04").getValue()!=null) {
-                    if(dataSnapshot.child("X04").getValue().equals(true)) {
+        mXINPUT.child("X04").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X04.setBackgroundColor(Color.RED);
                     }else{
                         X04.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X05").getValue()!=null) {
-                    if(dataSnapshot.child("X05").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X05").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X05.setBackgroundColor(Color.RED);
                     }else{
                         X05.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X06").getValue()!=null) {
-                    if(dataSnapshot.child("X06").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X06").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X06.setBackgroundColor(Color.RED);
                     }else{
                         X06.setBackgroundColor(Color.BLUE);
                     }
                 }
-                if (dataSnapshot.child("X07").getValue()!=null) {
-                    if(dataSnapshot.child("X07").getValue().equals(true)) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mXINPUT.child("X07").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getValue()!=null) {
+                    if(dataSnapshot.getValue().equals(true)) {
                         X07.setBackgroundColor(Color.RED);
                     }else{
                         X07.setBackgroundColor(Color.BLUE);
                     }
                 }
-
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
