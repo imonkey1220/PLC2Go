@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -56,6 +58,33 @@ public class AddUserActivity extends AppCompatActivity {
         editTextAddCompanyId = (EditText) (findViewById(R.id.editTextAddCompanyId));
         editTextAddUser = (EditText) (findViewById(R.id.editTextAddUser));
         editTextAddDescription = (EditText) (findViewById(R.id.editTextAddDescription));
+
+        if (ContextCompat.checkSelfPermission(AddUserActivity.this,
+                READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(AddUserActivity.this,
+                    READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(AddUserActivity.this,
+                        new String[]{READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+  /*
         if (checkSelfPermission(READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -73,7 +102,7 @@ public class AddUserActivity extends AppCompatActivity {
 
             return;
         }
-
+*/
     }
 
     public void addDevice(View view){
