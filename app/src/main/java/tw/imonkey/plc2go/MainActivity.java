@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
     FirebaseListAdapter mDeviceAdapter;
     StorageReference mImageRef;
     Boolean exit = false;
+    Toast toast;
     public static final String devicePrefs = "devicePrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +92,14 @@ public class MainActivity extends Activity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
+        toast.cancel();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mDeviceAdapter.cleanup();
+
     }
 
     @Override
@@ -263,9 +266,11 @@ public class MainActivity extends Activity {
             public void onDataChange(DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (!connected) {
-                    Toast.makeText(MainActivity.this,"手機失聯",Toast.LENGTH_LONG).show();
+                   toast=Toast.makeText(MainActivity.this,"手機失聯",Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
-                    Toast.makeText(MainActivity.this,"手機上線",Toast.LENGTH_LONG).show();
+                    toast=Toast.makeText(MainActivity.this,"手機上線",Toast.LENGTH_SHORT);
+                    toast.show();
                     presenceRef.setValue(true);
                 }
             }
