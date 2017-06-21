@@ -15,9 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.TimeZone;
@@ -49,36 +53,15 @@ public class Main2Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
         SharedPreferences settings = getSharedPreferences(devicePrefs, Context.MODE_PRIVATE);
         myDeviceId = settings.getString("deviceId",null);
-
-        // If a notification message is tapped, any data accompanying the notification
-        // message is available in the intent extras. In this sample the launcher
-        // intent is fired when the notification is tapped, so any accompanying data would
-        // be handled here. If you want a different intent fired, set the click_action
-        // field of the notification message to the desired intent. The launcher intent
-        // is used when no click_action is specified.
-        //
-        // Handle possible data accompanying notification message.
-        // [START handle_data_extras]
-
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 Log.d("getIntent", "Key: " + key + " Value: " + value);
             }
         }
-        // [END handle_data_extras]
         memberCheck();
     }
 
@@ -172,17 +155,19 @@ public class Main2Activity extends AppCompatActivity {
     private void getDevices(){
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_"));
+        DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_"));
         mAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
                 Device.class,
                 R.layout.listview_device_layout,
                 MessageHolder.class,
-                ref) {
+                refDevice) {
 
             @Override
             public void populateViewHolder(MessageHolder holder, Device device, final int position) {
                 holder.setDevice(device.getMasterEmail());
                 holder.setMessage(device.getAlert().get("message").toString());
+                holder.setDeviceType(device.getDeviceType());
+                holder.setPhoto(device.getTopics_id());
             }
         };
         RV4.setAdapter(mAdapter);
