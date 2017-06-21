@@ -59,4 +59,5 @@
     <string name="title_activity_device2">打卡機</string>
     <string name="title_activity_device_plc2">DevicePLC2Activity</string>
     <string name="title_activity_device_rpi3_io2">DeviceRPI3IO2Activity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

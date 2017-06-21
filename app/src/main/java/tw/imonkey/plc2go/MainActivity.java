@@ -44,11 +44,11 @@ import java.util.TimeZone;
 public class MainActivity extends Activity {
 
     ListView devicesView;
+    FirebaseListAdapter mDeviceAdapter;
     DatabaseReference mDelDevice,presenceRef,lastOnlineRef;
     public static String memberEmail,myDeviceId,deviceId;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseListAdapter mDeviceAdapter;
     StorageReference mImageRef;
     Boolean exit = false;
     Toast toast;
