@@ -173,30 +173,30 @@ public class Main2Activity extends AppCompatActivity {
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_"));
-
-        mAdapter = new FirebaseRecyclerAdapter<Message, MessageHolder>(
-                Message.class,
+        mAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
+                Device.class,
                 R.layout.listview_device_layout,
                 MessageHolder.class,
                 ref) {
 
             @Override
-            public void populateViewHolder(MessageHolder holder, Message message, final int position) {
-                holder.setName(message.getmemberEmail());
-                holder.setMessage(message.getMessage());
+            public void populateViewHolder(MessageHolder holder, Device device, final int position) {
+                holder.setDevice(device.getMasterEmail());
+                holder.setMessage(device.getAlert().get("message").toString());
             }
-
         };
         RV4.setAdapter(mAdapter);
+
         RV4.addOnItemTouchListener(new RecyclerItemClickListener(this,RV4,new RecyclerItemClickListener.OnItemClickListener() {
-            @Override public void onItemClick(View view, int position) {
+            @Override
+            public void onItemClick(View view, int position) {
                 // do whatever
             }
 
-            @Override public void onLongItemClick(View view, int position) {
+            @Override
+            public void onLongItemClick(View view, int position) {
                 // do whatever
             }
         }));
-
     }
 }

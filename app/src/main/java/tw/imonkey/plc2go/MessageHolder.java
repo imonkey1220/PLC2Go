@@ -5,21 +5,20 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class MessageHolder extends RecyclerView.ViewHolder {
-    private final TextView mNameField;
+class MessageHolder extends RecyclerView.ViewHolder {
+    private final TextView mDeviceField;
     private final TextView mMessageField;
 
     public MessageHolder(View itemView) {
         super(itemView);
-        mNameField = (TextView) itemView.findViewById(android.R.id.text1);
-        mMessageField = (TextView) itemView.findViewById(android.R.id.text2);
+        mDeviceField = (TextView) itemView.findViewById(R.id.deviceName);
+        mMessageField = (TextView) itemView.findViewById(R.id.deviceMessage);
     }
 
-    public void setName(String name) {
-        mNameField.setText(name);
+    void setDevice(String name) {
+        mDeviceField.setText(name);
     }
-
-    public void setMessage(String message) {
+    void setMessage(String message) {
         mMessageField.setText(message);
     }
 
