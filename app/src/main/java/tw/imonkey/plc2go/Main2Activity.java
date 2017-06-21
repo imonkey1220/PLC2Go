@@ -1,6 +1,7 @@
 package tw.imonkey.plc2go;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,13 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.TimeZone;
 
 public class Main2Activity extends AppCompatActivity {
-    FirebaseRecyclerAdapter mAdapter;
+    FirebaseRecyclerAdapter mDeviceAdapter;
 
     DatabaseReference mDelDevice,presenceRef,lastOnlineRef;
     public static String memberEmail,myDeviceId,deviceId;
@@ -68,7 +72,7 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAdapter.cleanup();
+        mDeviceAdapter.cleanup();
     }
 
     @Override
@@ -156,7 +160,7 @@ public class Main2Activity extends AppCompatActivity {
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
         DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_"));
-        mAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
+        mDeviceAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
                 Device.class,
                 R.layout.listview_device_layout,
                 MessageHolder.class,
@@ -170,17 +174,73 @@ public class Main2Activity extends AppCompatActivity {
                 holder.setPhoto(device.getTopics_id());
             }
         };
-        RV4.setAdapter(mAdapter);
+        RV4.setAdapter(mDeviceAdapter);
 
         RV4.addOnItemTouchListener(new RecyclerItemClickListener(this,RV4,new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // do whatever
+
+                deviceId=mDeviceAdapter.getRef(position).getKey();
+                mDeviceAdapter.getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        String deviceType=snapshot.child("deviceType").getValue().toString();
+                        if (deviceType.equals("主機")) {
+                            Intent intent = new Intent(Main2Activity.this, BossActivity.class);
+                            intent.putExtra("deviceId", deviceId);
+                            intent.putExtra("memberEmail", memberEmail);
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                                intent.putExtra("master", true);
+                            }else{
+                                intent.putExtra("master", false);
+                            }
+                            startActivity(intent);
+                        }else if(deviceType.equals("PLC監控機")){
+                            Intent intent = new Intent(Main2Activity.this, DevicePLCActivity.class);
+                            intent.putExtra("deviceId", deviceId);
+                            intent.putExtra("memberEmail", memberEmail);
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                                intent.putExtra("master", true);
+                            }else{
+                                intent.putExtra("master", false);
+                            }
+                            startActivity(intent);
+                        }else if(deviceType.equals("GPIO智慧機")){
+                            Intent intent = new Intent(Main2Activity.this, DeviceRPI3IOActivity.class);
+                            intent.putExtra("deviceId", deviceId);
+                            intent.putExtra("memberEmail", memberEmail);
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                                intent.putExtra("master", true);
+                            }else{
+                                intent.putExtra("master", false);
+                            }
+                            startActivity(intent);
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    }
+                });
             }
 
             @Override
             public void onLongItemClick(View view, int position) {
-                // do whatever
+                //delDevice
+                final String deviceId=mDeviceAdapter.getRef(position).getKey();
+                String company_device=((TextView)view.findViewById(R.id.deviceName)).getText().toString();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main2Activity.this);
+                alertDialog.setMessage("刪除智慧機:"+company_device);
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDelDevice= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
+                        mDelDevice.child(deviceId).removeValue();
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(deviceId);
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.show();
             }
         }));
     }
