@@ -44,7 +44,6 @@ public class Main2Activity extends AppCompatActivity {
     public static String memberEmail,myDeviceId,deviceId;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-    StorageReference mImageRef;
     Boolean exit = false;
     Toast toast;
     public static final String devicePrefs = "devicePrefs";
