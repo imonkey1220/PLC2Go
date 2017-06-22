@@ -211,5 +211,12 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,Main2Activity.class);
+        startActivity(intent);
+        finish();
+    }
 }
 

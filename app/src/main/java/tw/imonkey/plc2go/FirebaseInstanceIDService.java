@@ -47,7 +47,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser()!=null) {
             memberEmail = auth.getCurrentUser().getEmail();
-            DatabaseReference mUserFile = FirebaseDatabase.getInstance().getReference("/USER/" + memberEmail.replace(".", "_") + "/PFILE/");
+            DatabaseReference mUserFile = FirebaseDatabase.getInstance().getReference("/USER/" + memberEmail.replace(".", "_"));
             mUserFile.child("token").setValue(token);
         }
     }

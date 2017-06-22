@@ -77,6 +77,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
         respondRX();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,Main2Activity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void respondRX(){
         TVRX =(TextView)findViewById(R.id.textViewRX);
         mRX.limitToLast(1).addChildEventListener(new ChildEventListener() {

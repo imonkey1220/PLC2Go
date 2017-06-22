@@ -51,4 +51,11 @@ public class BossActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,Main2Activity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }

@@ -1,6 +1,7 @@
 package tw.imonkey.plc2go;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -674,6 +675,13 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,Main2Activity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
