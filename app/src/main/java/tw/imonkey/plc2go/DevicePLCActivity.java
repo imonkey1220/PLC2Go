@@ -78,6 +78,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
+    }
+
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(this,Main2Activity.class);
         startActivity(intent);

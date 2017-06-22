@@ -685,6 +685,12 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (master) {
             getMenuInflater().inflate(R.menu.menu, menu);
