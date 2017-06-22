@@ -7,23 +7,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
+
 import android.view.View;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +30,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class Main2Activity extends AppCompatActivity {
@@ -156,10 +155,10 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-    private void getDevices(){
+    private void getDevices() {
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
-        DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_"));
+        DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_"));
         mDeviceAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
                 Device.class,
                 R.layout.listview_device_layout,
@@ -168,64 +167,82 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void populateViewHolder(MessageHolder holder, Device device, final int position) {
-                holder.setDevice(device.getMasterEmail());
-                holder.setMessage(device.getAlert().get("message").toString());
-                holder.setDeviceType(device.getDeviceType());
-                holder.setPhoto(device.getTopics_id());
+                if (device.getTopics_id() != null && device.getCompanyId() != null && device.getDevice() != null) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(device.getTopics_id());
+                    if (device.getDeviceType().equals("主機")) {
+                        holder.setDevice(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
+                    } else if (device.getConnection() != null) {
+                        holder.setDevice(device.getCompanyId() + "." + device.getDevice() + "." + "上線" + ":" + device.getDescription());
+                    } else {
+                        holder.setDevice(device.getCompanyId() + "." + device.getDevice() + "." + "離線" + ":" + device.getDescription());
+                    }
+                    holder.setPhoto(device.getTopics_id());
+
+                    if (device.getAlert().get("message") != null) {
+                        Calendar timeStamp = Calendar.getInstance();
+                        timeStamp.setTimeInMillis(Long.parseLong(device.getAlert().get("timeStamp").toString()));
+                        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd", Locale.TAIWAN);
+                        holder.setMessage(device.getAlert().get("message").toString());
+                        holder.setDeviceType(df.format(timeStamp.getTime()) + "  " + device.getDeviceType());
+                    } else {
+                        holder.setMessage("");
+                        holder.setDeviceType(device.getDeviceType());
+                    }
+                }
             }
         };
         RV4.setAdapter(mDeviceAdapter);
-
-        RV4.addOnItemTouchListener(new RecyclerItemClickListener(this,RV4,new RecyclerItemClickListener.OnItemClickListener() {
+        RV4.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), RV4, new RecyclerViewClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-
-                deviceId=mDeviceAdapter.getRef(position).getKey();
+            public void onClick(View view, int position) {
+                deviceId = mDeviceAdapter.getRef(position).getKey();
                 mDeviceAdapter.getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        String deviceType=snapshot.child("deviceType").getValue().toString();
+                        String deviceType = snapshot.child("deviceType").getValue().toString();
                         if (deviceType.equals("主機")) {
                             Intent intent = new Intent(Main2Activity.this, BossActivity.class);
                             intent.putExtra("deviceId", deviceId);
                             intent.putExtra("memberEmail", memberEmail);
-                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)) {
                                 intent.putExtra("master", true);
-                            }else{
+                            } else {
                                 intent.putExtra("master", false);
                             }
                             startActivity(intent);
-                        }else if(deviceType.equals("PLC監控機")){
+                        } else if (deviceType.equals("PLC監控機")) {
                             Intent intent = new Intent(Main2Activity.this, DevicePLCActivity.class);
                             intent.putExtra("deviceId", deviceId);
                             intent.putExtra("memberEmail", memberEmail);
-                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)) {
                                 intent.putExtra("master", true);
-                            }else{
+                            } else {
                                 intent.putExtra("master", false);
                             }
                             startActivity(intent);
-                        }else if(deviceType.equals("GPIO智慧機")){
+                        } else if (deviceType.equals("GPIO智慧機")) {
                             Intent intent = new Intent(Main2Activity.this, DeviceRPI3IOActivity.class);
                             intent.putExtra("deviceId", deviceId);
                             intent.putExtra("memberEmail", memberEmail);
-                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)){
+                            if (snapshot.child("masterEmail").getValue().toString().equals(memberEmail)) {
                                 intent.putExtra("master", true);
-                            }else{
+                            } else {
                                 intent.putExtra("master", false);
                             }
                             startActivity(intent);
                         }
 
                     }
+
                     @Override
                     public void onCancelled(DatabaseError error) {
                     }
                 });
+
             }
 
             @Override
-            public void onLongItemClick(View view, int position) {
+            public void onLongClick(View view, int position) {
                 //delDevice
                 final String deviceId=mDeviceAdapter.getRef(position).getKey();
                 String company_device=((TextView)view.findViewById(R.id.deviceName)).getText().toString();
@@ -243,5 +260,6 @@ public class Main2Activity extends AppCompatActivity {
                 alertDialog.show();
             }
         }));
+
     }
 }

@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         return auth.getCurrentUser() != null;
     }
     private void loginUser(){
-        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent loginIntent = new Intent(LoginActivity.this, Main2Activity.class);
         startActivity(loginIntent);
         finish();
     }
