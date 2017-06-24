@@ -44,7 +44,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     ArrayList<String> friends = new ArrayList<>();
     Map<String, Object> cmd = new HashMap<>();
     Map<String, Object> log = new HashMap<>();
-    DatabaseReference mFriends,mDevice,mLog, mXINPUT,mYOUTPUT;
+    DatabaseReference mFriends,mDevice,mLog,mXINPUT,mYOUTPUT,mSETTINGS;
     FirebaseListAdapter mAdapter;
     ListView deviceView ,logView;
     Switch Y00,Y01,Y02,Y03,Y04,Y05,Y06,Y07;
@@ -75,7 +75,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         Y05=(Switch) findViewById(R.id.switchY05);
         Y06=(Switch) findViewById(R.id.switchY06);
         Y07=(Switch) findViewById(R.id.switchY07);
-
+        SETTINGS();
 
         mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
         Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
@@ -675,6 +675,147 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void SETTINGS() {
+        mSETTINGS = FirebaseDatabase.getInstance().getReference("/DEVICES/" + deviceId + "/SETTINGS");
+        mSETTINGS.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                X00.setText(snapshot.child("X00").getValue().toString());
+                X01.setText(snapshot.child("X01").getValue().toString());
+                X02.setText(snapshot.child("X02").getValue().toString());
+                X03.setText(snapshot.child("X03").getValue().toString());
+                X04.setText(snapshot.child("X04").getValue().toString());
+                X05.setText(snapshot.child("X05").getValue().toString());
+                X06.setText(snapshot.child("X06").getValue().toString());
+                X07.setText(snapshot.child("X07").getValue().toString());
+                Y00.setText(snapshot.child("Y00").getValue().toString());
+                Y01.setText(snapshot.child("Y01").getValue().toString());
+                Y02.setText(snapshot.child("Y02").getValue().toString());
+                Y03.setText(snapshot.child("Y03").getValue().toString());
+                Y04.setText(snapshot.child("Y04").getValue().toString());
+                Y05.setText(snapshot.child("Y05").getValue().toString());
+                Y06.setText(snapshot.child("Y06").getValue().toString());
+                Y07.setText(snapshot.child("Y07").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        X00.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X00");
+                return true;
+            }
+        });
+        X01.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X01");
+                return true;
+            }
+        });
+        X02.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X02");
+                return true;
+            }
+        });
+        X03.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X03");
+                return true;
+            }
+        });
+        X04.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X04");
+                return true;
+            }
+        });
+        X05.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X05");
+                return true;
+            }
+        });
+        X06.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X06");
+                return true;
+            }
+        });
+        X07.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("X07");
+                return true;
+            }
+        });
+
+        Y00.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y00");
+                return true;
+            }
+        });
+        Y01.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y01");
+                return true;
+            }
+        });
+        Y02.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y02");
+                return true;
+            }
+        });
+        Y03.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y03");
+                return true;
+            }
+        });
+        Y04.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y04");
+                return true;
+            }
+        });
+        Y05.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y05");
+                return true;
+            }
+        });
+        Y06.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y06");
+                return true;
+            }
+        });
+        Y07.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                showDialog("Y07");
+                return true;
+            }
+        });
+    }
+
+    private void showDialog(final String PINOUT) {
+
+        final EditText input = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle(PINOUT)
+                .setMessage("請輸入"+PINOUT+"功能")
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mSETTINGS.child(PINOUT).setValue(input.getText());
+                    }
+                })
+                .show();
     }
 
     @Override
