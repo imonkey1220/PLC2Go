@@ -682,24 +682,25 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         mSETTINGS.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                X00.setText(snapshot.child("X00").getValue().toString());
-                X01.setText(snapshot.child("X01").getValue().toString());
-                X02.setText(snapshot.child("X02").getValue().toString());
-                X03.setText(snapshot.child("X03").getValue().toString());
-                X04.setText(snapshot.child("X04").getValue().toString());
-                X05.setText(snapshot.child("X05").getValue().toString());
-                X06.setText(snapshot.child("X06").getValue().toString());
-                X07.setText(snapshot.child("X07").getValue().toString());
-                Y00.setText(snapshot.child("Y00").getValue().toString());
-                Y01.setText(snapshot.child("Y01").getValue().toString());
-                Y02.setText(snapshot.child("Y02").getValue().toString());
-                Y03.setText(snapshot.child("Y03").getValue().toString());
-                Y04.setText(snapshot.child("Y04").getValue().toString());
-                Y05.setText(snapshot.child("Y05").getValue().toString());
-                Y06.setText(snapshot.child("Y06").getValue().toString());
-                Y07.setText(snapshot.child("Y07").getValue().toString());
+                if (snapshot.getValue() != null) {
+                    X00.setText(snapshot.child("X00").getValue().toString());
+                    X01.setText(snapshot.child("X01").getValue().toString());
+                    X02.setText(snapshot.child("X02").getValue().toString());
+                    X03.setText(snapshot.child("X03").getValue().toString());
+                    X04.setText(snapshot.child("X04").getValue().toString());
+                    X05.setText(snapshot.child("X05").getValue().toString());
+                    X06.setText(snapshot.child("X06").getValue().toString());
+                    X07.setText(snapshot.child("X07").getValue().toString());
+                    Y00.setText(snapshot.child("Y00").getValue().toString());
+                    Y01.setText(snapshot.child("Y01").getValue().toString());
+                    Y02.setText(snapshot.child("Y02").getValue().toString());
+                    Y03.setText(snapshot.child("Y03").getValue().toString());
+                    Y04.setText(snapshot.child("Y04").getValue().toString());
+                    Y05.setText(snapshot.child("Y05").getValue().toString());
+                    Y06.setText(snapshot.child("Y06").getValue().toString());
+                    Y07.setText(snapshot.child("Y07").getValue().toString());
+                }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
@@ -804,7 +805,6 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     }
 
     private void showDialog(final String PINOUT) {
-
         final EditText input = new EditText(this);
         new AlertDialog.Builder(this)
                 .setTitle(PINOUT)
