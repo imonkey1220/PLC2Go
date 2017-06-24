@@ -57,7 +57,6 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_rpi3_io);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        init();
         X00=(TextView) findViewById(R.id.textViewX00);
         X01=(TextView) findViewById(R.id.textViewX01);
         X02=(TextView) findViewById(R.id.textViewX02);
@@ -75,6 +74,8 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         Y05=(Switch) findViewById(R.id.switchY05);
         Y06=(Switch) findViewById(R.id.switchY06);
         Y07=(Switch) findViewById(R.id.switchY07);
+
+        init();
         SETTINGS();
 
         mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
