@@ -131,6 +131,9 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
                         Toast.makeText(AddThingsDeviceActivity.this, "Image uploaded",
                                 Toast.LENGTH_SHORT).show();
 
+                        Intent intent = new Intent(AddThingsDeviceActivity.this, Main2Activity.class);
+                        startActivity(intent);
+
 
                     }
                 })
@@ -207,8 +210,7 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
             toFirebase();
             connectWebSocket(serverIP);
             Toast.makeText(this, "add device...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(AddThingsDeviceActivity.this, MainActivity.class);
-            startActivity(intent);
+
         }
     }
 

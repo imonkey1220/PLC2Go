@@ -134,11 +134,7 @@ public class AddUserActivity extends AppCompatActivity {
                 uploadPhoto(selectedImage);
             }
             Toast.makeText(this, "add user...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(AddUserActivity.this,Main2Activity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
+
         }
     }
 
@@ -178,6 +174,12 @@ public class AddUserActivity extends AppCompatActivity {
                         //              taskSnapshot.getMetadata().getReference().getPath());
                         Toast.makeText(AddUserActivity.this, "Image uploaded",
                                 Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(AddUserActivity.this,Main2Activity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
 
 
                     }
