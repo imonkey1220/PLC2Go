@@ -237,22 +237,21 @@ public class DevicePLC2Activity extends AppCompatActivity {
             }
             @Override
             public void onLongClick(View view, int position) {
-                // TODO
-                showDialog("M0000");
+                showDialog(mRegisterAdapter.getRef(position).getKey());
             }
         }));
     }
 
 
-    private void showDialog(final String Register) {
+    private void showDialog(final String address) {
         final EditText input = new EditText(this);
         new AlertDialog.Builder(this)
-                .setTitle(Register)
+                .setTitle(address)
                 .setMessage("請輸入暫存器功能")
                 .setView(input)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        mRegister.child(Register).setValue(input.getText());
+                        mRegister.child("name").setValue(input.getText());
                     }
                 })
                 .show();
