@@ -2,7 +2,6 @@ package tw.imonkey.plc2go;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,10 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,7 +47,7 @@ public class DevicePLC2Activity extends AppCompatActivity {
     boolean master;
     ListView deviceView;
     ArrayList<String> friends = new ArrayList<>();
-    DatabaseReference mFriends,mDevice,mAlert;
+    DatabaseReference mFriends,mDevice,mRegister;
     FirebaseRecyclerAdapter mRegisterAdapter;
 
 
@@ -217,27 +215,29 @@ public class DevicePLC2Activity extends AppCompatActivity {
     }
 
     private void RegisterView() {
-        mAlert = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_")+"/"+deviceId+"/alert/");
-        RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
-        RV4.setLayoutManager(new LinearLayoutManager(this));
-        mRegisterAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
-                Device.class,
-                R.layout.listview_device_layout,
-                MessageHolder.class,
-                mAlert){
+        mRegister = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_")+"/"+deviceId+"/REGISTER/");
+        RecyclerView RV5 = (RecyclerView) findViewById(R.id.RV5);
+        RV5.setLayoutManager(new LinearLayoutManager(this));
+        mRegisterAdapter = new FirebaseRecyclerAdapter<RegisterPLC, RegisterHolder>(
+                RegisterPLC.class,
+                android.R.layout.two_line_list_item,
+                RegisterHolder.class,
+                mRegister){
             @Override
-            public void populateViewHolder(MessageHolder holder, Device device, final int position) {
-
+            public void populateViewHolder(RegisterHolder holder, RegisterPLC register, final int position) {
+                holder.setName(register.getName());
+                holder.setMessage(register.getMessage());
             }
         };
-        RV4.setAdapter(mRegisterAdapter);
-        RV4.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), RV4, new RecyclerViewClickListener() {
+        RV5.setAdapter(mRegisterAdapter);
+        RV5.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), RV5, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                // TODO
             }
             @Override
             public void onLongClick(View view, int position) {
+                // TODO
                 showDialog("M0000");
             }
         }));
@@ -248,11 +248,11 @@ public class DevicePLC2Activity extends AppCompatActivity {
         final EditText input = new EditText(this);
         new AlertDialog.Builder(this)
                 .setTitle(Register)
-                .setMessage("請輸入"+Register+"功能")
+                .setMessage("請輸入暫存器功能")
                 .setView(input)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        mAlert.child(Register).setValue(input.getText());
+                        mRegister.child(Register).setValue(input.getText());
                     }
                 })
                 .show();
