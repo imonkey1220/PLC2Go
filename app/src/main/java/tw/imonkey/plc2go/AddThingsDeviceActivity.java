@@ -160,13 +160,16 @@ public class AddThingsDeviceActivity extends AppCompatActivity {
         addMaster.put("topics_id",deviceId);
         mAddMaster.child(deviceId).setValue(addMaster);
 
-        DatabaseReference mAddDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);//DEVICE for friends
+        DatabaseReference mAddDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);
         Map<String, Object> addDevice = new HashMap<>();
         addDevice.put("companyId",companyId);
         addDevice.put("device",device);
         addDevice.put("deviceType",deviceType);
         addDevice.put("description",description);
         addDevice.put("masterEmail",memberEmail) ;
+        Map<String, Object> user = new HashMap<>();
+        user.put(memberEmail.replace(".","_"),memberEmail);
+        addDevice.put("users",user);
         addDevice.put("timeStamp",ServerValue.TIMESTAMP);
         addDevice.put("topics_id",deviceId) ;
         mAddDevice.setValue(addDevice);

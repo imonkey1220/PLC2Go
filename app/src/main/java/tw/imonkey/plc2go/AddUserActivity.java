@@ -110,6 +110,9 @@ public class AddUserActivity extends AppCompatActivity {
             addDevice.put("deviceType","主機");
             addDevice.put("description",description);
             addDevice.put("masterEmail",memberEmail) ;
+            Map<String, Object> user = new HashMap<>();
+            user.put(memberEmail.replace(".","_"),memberEmail);
+            addDevice.put("users",user);
             addDevice.put("timeStamp",ServerValue.TIMESTAMP);
             addDevice.put("topics_id",deviceId) ;
             mAddDevice.setValue(addDevice);

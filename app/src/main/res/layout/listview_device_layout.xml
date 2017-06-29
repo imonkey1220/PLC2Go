@@ -20,7 +20,7 @@
             android:id="@+id/deviceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingTop="5dp"
             android:textColor="@android:color/holo_blue_light"
             android:textSize="18sp" />
@@ -33,7 +33,7 @@
             android:maxLines="2"
             android:minLines="2"
             android:paddingTop="5dp"
-            android:textColor="?android:attr/colorControlActivated"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textAlignment="viewEnd"
-            android:textColor="?android:attr/colorPressedHighlight"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

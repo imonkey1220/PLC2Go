@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -156,7 +157,8 @@ public class Main2Activity extends AppCompatActivity {
     private void getDevices() {
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
-        DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_"));
+     //  DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_"));
+        Query refDevice = FirebaseDatabase.getInstance().getReference("DEVICE").child("/users/"+memberEmail.replace(".", "_")).equalTo(memberEmail);
         mDeviceAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
                 Device.class,
                 R.layout.listview_device_layout,
@@ -249,8 +251,9 @@ public class Main2Activity extends AppCompatActivity {
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mDelDevice= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
-                        mDelDevice.child(deviceId).removeValue();
+                  //      mDelDevice= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
+                        mDelDevice=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);
+                        mDelDevice.child("/users/"+memberEmail.replace(".", "_")).removeValue();
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(deviceId);
                         dialog.cancel();
                     }

@@ -41,12 +41,13 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
     public static final String service="RPI3IO"; //GPIO智慧機 deviceType
     String deviceId, memberEmail;
     boolean master;
-    ArrayList<String> friends = new ArrayList<>();
+ //   ArrayList<String> friends = new ArrayList<>();
+    ArrayList<String> users = new ArrayList<>();
     Map<String, Object> cmd = new HashMap<>();
     Map<String, Object> log = new HashMap<>();
-    DatabaseReference mFriends,mDevice,mLog,mXINPUT,mYOUTPUT,mSETTINGS;
+    DatabaseReference mUsers,/* mFriends ,*/ mDevice,mLog,mXINPUT,mYOUTPUT,mSETTINGS;
     FirebaseListAdapter mAdapter;
-    ListView deviceView ,logView;
+    ListView userView ,logView;
     Switch Y00,Y01,Y02,Y03,Y04,Y05,Y06,Y07;
     TextView X00,X01,X02,X03,X04,X05,X06,X07;
 
@@ -78,8 +79,10 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         init();
         SETTINGS();
 
-        mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
-        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
+       // mLog=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
+        mLog=FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/");
+       // Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/").limitToLast(25);
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/").limitToLast(25);
         logView = (ListView) findViewById(R.id.listViewLog);
         mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
             @Override
@@ -105,7 +108,8 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         };
         logView.setAdapter(mAdapter);
 
-        mYOUTPUT=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/Y/");
+        //mYOUTPUT=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/Y/");
+        mYOUTPUT=FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/Y/");
         Y00.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -461,7 +465,8 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         });
 
 
-        mXINPUT= FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/X/");
+        //mXINPUT= FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/X/");
+        mXINPUT= FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/X/");
         mXINPUT.child("X00").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -662,24 +667,10 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             }
         });
 
-        mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+memberEmail.replace(".","_")+"/"+deviceId+"/"+"friend");
-        mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                friends.clear();
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    friends.add(childSnapshot.getValue().toString());
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-
     }
 
     private void SETTINGS() {
-        mSETTINGS = FirebaseDatabase.getInstance().getReference("/DEVICES/" + deviceId + "/SETTINGS");
+        mSETTINGS = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId + "/SETTINGS");
         mSETTINGS.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -846,7 +837,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             case R.id.action_add_friend:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(DeviceRPI3IOActivity.this);
                 LayoutInflater inflater = LayoutInflater.from(DeviceRPI3IOActivity.this);
-                final View v = inflater.inflate(R.layout.add_friend, deviceView, false);
+                final View v = inflater.inflate(R.layout.add_friend, userView, false);
                 dialog.setTitle("邀請朋友加入服務");
                 dialog.setView(v);
                 dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -854,6 +845,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         final EditText editTextAddFriendEmail = (EditText) (v.findViewById(R.id.editTextAddFriendEmail));
                         if (!editTextAddFriendEmail.getText().toString().isEmpty()) {
+                            /*
                             DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
                             refDevice.child("friend").push().setValue(editTextAddFriendEmail.getText().toString());
                             refDevice.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -872,6 +864,11 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
 
                                 }
                             });
+                            */
+
+                            DatabaseReference mAddfriend = FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);
+                            mAddfriend.child("/users/"+editTextAddFriendEmail.getText().toString().replace(".", "_")).setValue(editTextAddFriendEmail.getText().toString());
+                            Toast.makeText(DeviceRPI3IOActivity.this, "已寄出邀請函(有效時間10分鐘)", Toast.LENGTH_LONG).show();
                         }
                         dialog.cancel();
                     }
@@ -883,6 +880,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             case R.id.action_del_friend:
                 AlertDialog.Builder dialog_list = new AlertDialog.Builder(DeviceRPI3IOActivity.this);
                 dialog_list.setTitle("選擇要刪除的朋友");
+                /*
                 dialog_list.setItems(friends.toArray(new String[0]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -902,6 +900,26 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
                         friends.remove(which);
                     }
                 });
+                */
+                dialog_list.setItems(users.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(DeviceRPI3IOActivity.this, "你要刪除是" + users.get(which), Toast.LENGTH_SHORT).show();
+                        mUsers.orderByValue().equalTo(users.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                    childSnapshot.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                        users.remove(which);
+                    }
+                });
                 dialog_list.show();
                 return true;
 
@@ -918,7 +936,8 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
         deviceId = extras.getString("deviceId");
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
-        mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
+     //   mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
+        mDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
         mDevice.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -936,8 +955,20 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-
+        //Device's Users
+        mUsers= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/users/");
+        mUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                users.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    users.add(childSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+/*
         mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");
         mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -951,6 +982,7 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+        */
     }
 
 
@@ -964,7 +996,8 @@ public class DeviceRPI3IOActivity extends AppCompatActivity {
 
     public void buttonSendMessageOnClick(View view){
         EditText editTextTalk=(EditText)findViewById(R.id.editTextTalk);
-        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
+     //   DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/GPIO/" + deviceId+"/LOG/");
+        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/");
         if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
             Map<String, Object> addMessage = new HashMap<>();
             addMessage.put("memberEmail",memberEmail);

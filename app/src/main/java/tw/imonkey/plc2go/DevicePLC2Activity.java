@@ -45,9 +45,9 @@ public class DevicePLC2Activity extends AppCompatActivity {
 
     String deviceId, memberEmail;
     boolean master;
-    ListView deviceView;
-    ArrayList<String> friends = new ArrayList<>();
-    DatabaseReference mFriends,mDevice,mRegister;
+    ListView userView;
+    ArrayList<String> users = new ArrayList<>();
+    DatabaseReference  mUsers,mDevice,mRegister;
     FirebaseRecyclerAdapter mRegisterAdapter;
 
 
@@ -76,6 +76,72 @@ public class DevicePLC2Activity extends AppCompatActivity {
             }
         });
         init();
+        RegisterView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (master) {
+            getMenuInflater().inflate(R.menu.menu, menu);
+            return true;
+        }
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_friend:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DevicePLC2Activity.this);
+                LayoutInflater inflater = LayoutInflater.from(DevicePLC2Activity.this);
+                final View v = inflater.inflate(R.layout.add_friend, userView, false);
+                dialog.setTitle("邀請朋友加入服務");
+                dialog.setView(v);
+                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final EditText editTextAddFriendEmail = (EditText) (v.findViewById(R.id.editTextAddFriendEmail));
+                        if (!editTextAddFriendEmail.getText().toString().isEmpty()) {
+                            DatabaseReference mAddfriend = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
+                            mAddfriend.child("/users/" + editTextAddFriendEmail.getText().toString().replace(".", "_")).setValue(editTextAddFriendEmail.getText().toString());
+                            Toast.makeText(DevicePLC2Activity.this, "已寄出邀請函(有效時間10分鐘)", Toast.LENGTH_LONG).show();
+                        }
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+
+                return true;
+
+            case R.id.action_del_friend:
+                AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLC2Activity.this);
+                dialog_list.setTitle("選擇要刪除的朋友");
+                dialog_list.setItems(users.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(DevicePLC2Activity.this, "你要刪除是" + users.get(which), Toast.LENGTH_SHORT).show();
+                        mUsers.orderByValue().equalTo(users.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                    childSnapshot.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                        users.remove(which);
+                    }
+                });
+                dialog_list.show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -92,86 +158,6 @@ public class DevicePLC2Activity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (master) {
-            getMenuInflater().inflate(R.menu.menu, menu);
-            return true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_friend:
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DevicePLC2Activity.this);
-                LayoutInflater inflater = LayoutInflater.from(DevicePLC2Activity.this);
-                final View v = inflater.inflate(R.layout.add_friend, deviceView, false);
-                dialog.setTitle("邀請朋友加入服務");
-                dialog.setView(v);
-                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final EditText editTextAddFriendEmail = (EditText) (v.findViewById(R.id.editTextAddFriendEmail));
-                        if (!editTextAddFriendEmail.getText().toString().isEmpty()) {
-                            DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
-                            refDevice.child("friend").push().setValue(editTextAddFriendEmail.getText().toString());
-                            refDevice.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-                                    if (snapshot.getValue() != null) {
-                                        Device device = snapshot.getValue(Device.class);
-                                        DatabaseReference mInvitation = FirebaseDatabase.getInstance().getReference("/FUI/" + editTextAddFriendEmail.getText().toString().replace(".", "_") + "/" + deviceId);
-                                        mInvitation.setValue(device);
-                                        Toast.makeText(DevicePLC2Activity.this, "已寄出邀請函(有效時間10分鐘)", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError firebaseError) {
-
-                                }
-                            });
-                        }
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
-
-                return true;
-
-            case R.id.action_del_friend:
-                AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLC2Activity.this);
-                dialog_list.setTitle("選擇要刪除的朋友");
-                dialog_list.setItems(friends.toArray(new String[0]), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(DevicePLC2Activity.this, "你要刪除是" + friends.get(which), Toast.LENGTH_SHORT).show();
-                        mFriends.orderByValue().equalTo(friends.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                    childSnapshot.getRef().removeValue();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                        friends.remove(which);
-                    }
-                });
-                dialog_list.show();
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
@@ -179,7 +165,7 @@ public class DevicePLC2Activity extends AppCompatActivity {
         deviceId = extras.getString("deviceId");
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
-        mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
+        mDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/"+ deviceId);
         mDevice.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -198,24 +184,23 @@ public class DevicePLC2Activity extends AppCompatActivity {
             }
         });
 
-        mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");
-        mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        //Device's Users
+        mUsers= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/users/");
+        mUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                friends.clear();
+                users.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    friends.add(childSnapshot.getValue().toString());
+                    users.add(childSnapshot.getValue().toString());
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
-
     }
 
     private void RegisterView() {
-        mRegister = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_")+"/"+deviceId+"/REGISTER/");
+        mRegister = FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/REGISTER/");
         RecyclerView RV5 = (RecyclerView) findViewById(R.id.RV5);
         RV5.setLayoutManager(new LinearLayoutManager(this));
         mRegisterAdapter = new FirebaseRecyclerAdapter<RegisterPLC, RegisterHolder>(

@@ -58,10 +58,9 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     String deviceId, memberEmail;
     boolean master;
-    ListView deviceView,logView;
-    ArrayList<String> friends = new ArrayList<>();
+    ListView logView;
     ArrayList<String> CMDs = new ArrayList<>();
-    DatabaseReference  mLog,mFriends,mDevice,mRX,mTX,mCMDDel, mCMDSave;
+    DatabaseReference  mLog,mDevice,mRX,mTX,mCMDDel, mCMDSave;
     FirebaseListAdapter mAdapter;
     EditText ETCMDTest;
     EditText ETData;
@@ -71,8 +70,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_plc);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         init();
         respondRX();
     }
@@ -193,88 +190,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
         Register_Block();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (master) {
-            getMenuInflater().inflate(R.menu.menu, menu);
-            return true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_friend:
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DevicePLCActivity.this);
-                LayoutInflater inflater = LayoutInflater.from(DevicePLCActivity.this);
-                final View v = inflater.inflate(R.layout.add_friend, deviceView, false);
-                dialog.setTitle("邀請朋友加入服務");
-                dialog.setView(v);
-                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final EditText editTextAddFriendEmail = (EditText) (v.findViewById(R.id.editTextAddFriendEmail));
-                        if (!editTextAddFriendEmail.getText().toString().isEmpty()) {
-                            DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
-                            refDevice.child("friend").push().setValue(editTextAddFriendEmail.getText().toString());
-                            refDevice.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-                                    if (snapshot.getValue() != null) {
-                                        Device device = snapshot.getValue(Device.class);
-                                        DatabaseReference mInvitation = FirebaseDatabase.getInstance().getReference("/FUI/" + editTextAddFriendEmail.getText().toString().replace(".", "_") + "/" + deviceId);
-                                        mInvitation.setValue(device);
-                                        Toast.makeText(DevicePLCActivity.this, "已寄出邀請函(有效時間10分鐘)", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError firebaseError) {
-
-                                }
-                            });
-                        }
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
-
-                return true;
-
-            case R.id.action_del_friend:
-                AlertDialog.Builder dialog_list = new AlertDialog.Builder(DevicePLCActivity.this);
-                dialog_list.setTitle("選擇要刪除的朋友");
-                dialog_list.setItems(friends.toArray(new String[0]), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(DevicePLCActivity.this, "你要刪除是" + friends.get(which), Toast.LENGTH_SHORT).show();
-                        mFriends.orderByValue().equalTo(friends.get(which)).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                    childSnapshot.getRef().removeValue();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                        friends.remove(which);
-                    }
-                });
-                dialog_list.show();
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     private void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
         Bundle extras = getIntent().getExtras();
@@ -299,20 +214,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        mFriends=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/friend/");
-        mFriends.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                friends.clear();
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    friends.add(childSnapshot.getValue().toString());
-                }
-            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
