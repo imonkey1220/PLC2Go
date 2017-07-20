@@ -40,6 +40,7 @@ public class DevicePLC2Activity extends AppCompatActivity {
     //set serialport protocol parameters
     String STX=new String(new char[]{0x02});
     String ETX=new String(new char[]{0x03});
+    String EOT=new String(new char[]{0x04});
     String ENQ=new String(new char[]{0x05});
     String newLine=new String(new char[]{0x0D,0x0A});
 

@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-
+// Set DevicePLC  serialport  CMD .
 public class DevicePLCActivity extends AppCompatActivity  {
     public static final String devicePrefs = "devicePrefs";
     public static final String service="PLC"; //PLC監控機 deviceType
@@ -51,6 +51,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     //set serialport protocol parameters
     String STX=new String(new char[]{0x02});
     String ETX=new String(new char[]{0x03});
+    String EOT=new String(new char[]{0x04});
     String ENQ=new String(new char[]{0x05});
     String newLine=new String(new char[]{0x0D,0x0A});
 
@@ -60,7 +61,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
     boolean master;
     ListView logView;
     ArrayList<String> CMDs = new ArrayList<>();
-    DatabaseReference  mLog,mDevice,mRX,mTX,mCMDDel, mCMDSave;
+    DatabaseReference  mDevice,mLog,mRX,mTX,mCMDDel,mCMDSave;
     FirebaseListAdapter mAdapter;
     EditText ETCMDTest;
     EditText ETData;
@@ -90,22 +91,17 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     private void respondRX(){
         TVRX =(TextView)findViewById(R.id.textViewRX);
-        mRX.limitToLast(1).addChildEventListener(new ChildEventListener() {
+        mRX.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                if (dataSnapshot.child("message").getValue()!= null) {
-                    TVRX.setText(dataSnapshot.child("message").getValue().toString());
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.child("message").getValue()!= null) {
+                    TVRX.setText(snapshot.child("message").getValue().toString());
                 }
             }
+
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -118,7 +114,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
             CMD.put("message",CMDTest);
             CMD.put("memberEmail",memberEmail);
             CMD.put("timeStamp", ServerValue.TIMESTAMP);
-            mTX.push().setValue(CMD);
+            mTX.setValue(CMD);
             CMD.put("message","Test CMD:"+CMDTest);
             mLog.push().setValue(CMD);
             Toast.makeText(DevicePLCActivity.this, "Test CMD:"+CMDTest, Toast.LENGTH_SHORT).show();
@@ -197,10 +193,10 @@ public class DevicePLCActivity extends AppCompatActivity  {
         memberEmail = extras.getString("memberEmail");
         master = extras.getBoolean("master");
         ETCMDTest =(EditText) findViewById(R.id.editTextCMDTest);
-        mTX= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/TX/");
-        mRX= FirebaseDatabase.getInstance().getReference("/LOG/RS232/"+deviceId+"/RX/");
-        mLog=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
-        mDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_") + "/" + deviceId);
+        mTX= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/TX/");
+        mRX= FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId+"/RX/");
+        mLog=FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/");
+        mDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId);
         mDevice.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -213,7 +209,6 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -242,14 +237,14 @@ public class DevicePLCActivity extends AppCompatActivity  {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 cmd[4]=ETData.getText().toString().trim();
-                    ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
             }
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
 
-        Query refDevice = FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/").limitToLast(25);
+        Query refDevice = FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/").limitToLast(25);
         logView = (ListView) findViewById(R.id.listViewLog);
         mAdapter= new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.two_line_list_item, refDevice) {
             @Override
@@ -285,7 +280,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
 
     public void buttonSendMessageOnClick(View view){
         EditText editTextTalk=(EditText)findViewById(R.id.editTextTalk);
-        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/LOG/RS232/" + deviceId+"/LOG/");
+        DatabaseReference mTalk=FirebaseDatabase.getInstance().getReference("/DEVICE/" + deviceId+"/LOG/");
         if(TextUtils.isEmpty(editTextTalk.getText().toString().trim())){
             Map<String, Object> addMessage = new HashMap<>();
             addMessage.put("message","Gotcha:"+memberEmail);
@@ -324,12 +319,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
                     cmd[0] = items.get(position);
-                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
             }
         });
     }
@@ -359,7 +354,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
                     cmd[1] = items.get(position);
-                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
                     if (items.get(position).equals("BW") || items.get(position).equals("WW")) {
                         LinearLayout LWriteMode = (LinearLayout) findViewById(R.id.writeData);
                         LWriteMode.setVisibility(View.VISIBLE);
@@ -379,7 +374,7 @@ public class DevicePLCActivity extends AppCompatActivity  {
                 }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
                 LinearLayout LWriteMode=(LinearLayout) findViewById(R.id.writeData);
                 LWriteMode.setVisibility(View.INVISIBLE);
                 LinearLayout LReadMode=(LinearLayout) findViewById(R.id.readDataBlock);
@@ -413,12 +408,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
                     cmd[2] = items.get(position);
-                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
             }
         });
     }
@@ -455,12 +450,12 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
                     cmd[3] = items.get(position);
-                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
             }
         });
 
@@ -503,13 +498,13 @@ public class DevicePLCActivity extends AppCompatActivity  {
                     Toast.makeText(DevicePLCActivity.this, "你選的是" + items.get(position), Toast.LENGTH_SHORT).show();
                 }
                     cmd[4] = items.get(position);
-                    ETCMDTest.setText(cmd[0] + cmd[1] + cmd[2] + cmd[3] + cmd[4]);
+                    ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ETCMDTest.setText(cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]);
+                ETCMDTest.setText((cmd[0]+cmd[1]+cmd[2]+cmd[3]+cmd[4]));
             }
         });
     }

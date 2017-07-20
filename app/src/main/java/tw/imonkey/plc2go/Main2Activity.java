@@ -39,7 +39,6 @@ import java.util.TimeZone;
 
 public class Main2Activity extends AppCompatActivity {
     FirebaseRecyclerAdapter mDeviceAdapter;
-
     DatabaseReference mDelDevice,presenceRef,lastOnlineRef;
     public static String memberEmail,myDeviceId,deviceId;
     FirebaseAuth mAuth;
@@ -104,7 +103,6 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void memberCheck(){
-        //initializing firebase auth object
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -127,8 +125,6 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void phoneOnline(){
-        //phone online check
-        // Write a string when this client loses connection
         presenceRef = FirebaseDatabase.getInstance().getReference("/USER/"+memberEmail.replace(".", "_")+"/connections");
         presenceRef.setValue(true);
         presenceRef.onDisconnect().setValue(null);
@@ -157,11 +153,10 @@ public class Main2Activity extends AppCompatActivity {
     private void getDevices() {
         RecyclerView RV4 = (RecyclerView) findViewById(R.id.RV4);
         RV4.setLayoutManager(new LinearLayoutManager(this));
-     //  DatabaseReference refDevice = FirebaseDatabase.getInstance().getReference("/FUI/" + memberEmail.replace(".", "_"));
         Query refDevice = FirebaseDatabase.getInstance().getReference("DEVICE").child("/users/"+memberEmail.replace(".", "_")).equalTo(memberEmail);
         mDeviceAdapter = new FirebaseRecyclerAdapter<Device, MessageHolder>(
                 Device.class,
-                R.layout.listview_device_layout,
+                R.layout.device_layout,
                 MessageHolder.class,
                 refDevice) {
 
@@ -251,7 +246,6 @@ public class Main2Activity extends AppCompatActivity {
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                  //      mDelDevice= FirebaseDatabase.getInstance().getReference("/FUI/" +memberEmail.replace(".", "_"));
                         mDelDevice=FirebaseDatabase.getInstance().getReference("/DEVICE/"+deviceId);
                         mDelDevice.child("/users/"+memberEmail.replace(".", "_")).removeValue();
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(deviceId);
@@ -261,6 +255,5 @@ public class Main2Activity extends AppCompatActivity {
                 alertDialog.show();
             }
         }));
-
     }
 }

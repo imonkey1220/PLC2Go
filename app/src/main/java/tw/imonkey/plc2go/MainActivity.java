@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
     private void getDevices(){
         Query refDevice = FirebaseDatabase.getInstance().getReference("/FUI/"+memberEmail.replace(".", "_")).orderByChild("companyId");
         devicesView = (ListView) findViewById(R.id.listViewDevices);
-        mDeviceAdapter= new FirebaseListAdapter<Device>(this, Device.class,R.layout.listview_device_layout, refDevice) {
+        mDeviceAdapter= new FirebaseListAdapter<Device>(this, Device.class,R.layout.device_layout, refDevice) {
 
             @Override
             protected void populateView(View view, Device device, int position) {
